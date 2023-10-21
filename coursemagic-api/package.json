@@ -3,9 +3,13 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "hono": "^3.8.1"
+    "express": "^4.18.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
+    "@types/passport": "^1.0.14",
+    "@types/passport-google-oauth20": "^2.0.13",
     "bun-types": "^1.0.6"
   }
 }
