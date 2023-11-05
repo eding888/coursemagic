@@ -1,0 +1,28 @@
+@keyframes slide-and-fade {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+    transform: translateY(-300px);
+  }
+}
+
+@keyframes fade-away {
+  0% {
+    opacity: 100%;
+    transform: translateY(-300px);
+  }
+  100% {
+    opacity: 0%;
+    transform: translateY(-300px);
+  }
+}
+
+.slide-and-fade {
+  animation: slide-and-fade 1s forwards;
+}
+
+.fade-away {
+  animation: fade-away 1s forwards;
+}
