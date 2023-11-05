@@ -4,18 +4,30 @@
   }
   100% {
     opacity: 100%;
-    transform: translateY(-300px);
+    transform: translateY(-200px);
   }
 }
 
 @keyframes fade-away {
   0% {
     opacity: 100%;
-    transform: translateY(-300px);
+    transform: translateY(-200px);
   }
   100% {
     opacity: 0%;
-    transform: translateY(-300px);
+    transform: translateY(-200px);
+  }
+}
+
+@keyframes wiggle {
+  0% {
+   transform: rotate(0deg) scaleX(-1);
+  }
+  50% {
+    transform: rotate(-3deg) scaleX(-1);
+  }
+  100% {
+    transform: rotate(0deg) scaleX(-1);
   }
 }
 
@@ -25,4 +37,12 @@
 
 .fade-away {
   animation: fade-away 1s forwards;
+}
+
+.body-image {
+  filter: drop-shadow(2px 2px 2px #222);
+}
+
+.wiggle {
+  animation: wiggle 2s infinite;
 }
