@@ -15,6 +15,9 @@ passport.use(new GoogleStrategy({
   },
   // Callback for successful google auth
   function(accessToken: string, refreshToken: string, profile: UserProfile, done: () => void) {
+    console.log(accessToken);
+    console.log(refreshToken);
+    console.log(profile);
     done();
   }
 ));
