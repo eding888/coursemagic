@@ -6,12 +6,12 @@ const googleAuthRouter = express.Router();
 
 // Request for when google authentication is initialized. Redirects to google
 googleAuthRouter.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
+  passport.authenticate('google', { session: true, scope: ['profile', 'email'] })
 );
 
 // Callback after successful request where stuff can be done.
 googleAuthRouter.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', { failureRedirect: '/swag' }),
   (req: Request, res: Response) => {
     res.redirect('/dashboard');
   }
