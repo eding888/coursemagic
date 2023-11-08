@@ -3,6 +3,8 @@ import session from 'express-session';
 import passport from 'passport';
 require('./googleStrategy');
 
+import { initTables } from './database/tableSchemas';
+
 //ROUTER IMPORTS
 import googleAuthRouter from './routers/googleAuthRouter';
 
@@ -23,9 +25,9 @@ app.use(passport.session());
 
 app.use(googleAuthRouter);
 
+initTables();
+
 const port = Bun.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
-console.log("done");

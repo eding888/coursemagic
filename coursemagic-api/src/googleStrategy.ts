@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { VerifyCallback } from 'passport-google-oauth20';
+import { findUserById, addUser } from './database/postgreDataAccess';
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Interface defining profile returned by succesful google auth
@@ -15,18 +16,28 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/callback"
   },
   // Callback for successful google auth
-  function(accessToken: string, refreshToken: string, profile: UserProfile, done: VerifyCallback) {
+  async function(accessToken: string, refreshToken: string, profile: UserProfile, done: VerifyCallback) {
     console.log(accessToken);
     console.log(refreshToken);
-    console.log(profile);
     const user = {
-      id: "123124",
-      name: "swag"
+      id: profile.id,
+      name: profile.displayName
     }
+    console.log(user);
+    const userInDB = await findUserById(profile.id);
+    console.log("found", userInDB);
+    if(userInDB.length === 0) {
+      await addUser(user);
+    }
+
+    // Create user profile to be stored in cookie. This cookie will be
+    // accessible in req.user
     done(null, user);
   }
 ));
 
+
+// IDEK what these do but it works so...
 passport.serializeUser(function(user, done) {
   done(null, user);
 });

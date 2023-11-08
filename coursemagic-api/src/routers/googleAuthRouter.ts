@@ -11,8 +11,9 @@ googleAuthRouter.get('/auth/google',
 
 // Callback after successful request where stuff can be done.
 googleAuthRouter.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/swag' }),
+  passport.authenticate('google', { failureRedirect: '/fail' }),
   (req: Request, res: Response) => {
+    // Successful request goes to dashboard. User will be availble in cookie in req.user
     res.redirect('/dashboard');
   }
 );
