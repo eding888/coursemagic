@@ -8,23 +8,42 @@ interface User {
 }
 
 export const getAllUsers = async () => {
-  const users = await sql`
-    SELECT * from users;
-  `
-  return users;
+  try {
+    const users = await sql`
+      SELECT * from users;
+    `
+    return users;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
 };
 
 export const findUserById = async (id: string) => {
-  const user = await sql`
-    SELECT * FROM users
-    WHERE ${id} = users.id;
-  `
-  return user;
+  try {
+    const user = await sql`
+      SELECT * FROM users
+      WHERE ${id} = users.id;
+   `
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
 }
 
 export const addUser = async (user: User) => {
-  await sql`
-    INSERT INTO users
-    VALUES (${user.id}, ${user.name});
-  `
+  try {
+    await sql`
+      INSERT INTO users
+      VALUES (${user.id}, ${user.name});
+    `
+    return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
 }

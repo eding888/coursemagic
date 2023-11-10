@@ -11,6 +11,10 @@ const tables = async () => {
     CREATE TABLE IF NOT EXISTS classes (
       id SERIAL PRIMARY KEY,
       userid INT NOT NULL,
+      startTime INT NOT NULL,
+      endTime INT NOT NULL,
+      creditHours INT NOT NULL,
+      lectureHall varchar(255),
       FOREIGN KEY (userid) REFERENCES users(id)
     );
   `
@@ -24,14 +28,15 @@ const tables = async () => {
       FOREIGN KEY (classid) REFERENCES classes(id)
     );
   `
-  /* Individual classes saved in some collection. Includes reference to this collection*/
+  /* Individual classes saved in some collection. Includes reference to this collection name*/
   await sql`
     CREATE TABLE IF NOT EXISTS savedClasses (
       id SERIAL PRIMARY KEY,
       userid INT NOT NULL,
       collectionName varchar(255) NOT NULL,
       classid INT NOT NULL,
-      UNIQUE(userid, classid, collectionName),
+      UNIQUE(collectionName, classid),
+      UNIQUE(userid, collectionName),
       FOREIGN KEY (classid) REFERENCES classes(id),
       FOREIGN KEY (userid) REFERENCES users(id)
     );
