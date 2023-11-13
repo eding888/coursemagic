@@ -3,14 +3,14 @@ import sql from "./sql";
 const tables = async () => {
   await sql`
     CREATE TABLE IF NOT EXISTS users (
-      id INT UNIQUE PRIMARY KEY,
+      id varchar(255) UNIQUE PRIMARY KEY,
       name varchar(255) NOT NULL
     );
   `
   await sql`
     CREATE TABLE IF NOT EXISTS classes (
       id SERIAL PRIMARY KEY,
-      userid INT NOT NULL,
+      userid varchar(255) NOT NULL,
       startTime INT NOT NULL,
       endTime INT NOT NULL,
       creditHours INT NOT NULL,
@@ -22,7 +22,7 @@ const tables = async () => {
   await sql`
     CREATE TABLE IF NOT EXISTS userCurrentClasses (
       id SERIAL PRIMARY KEY,
-      userid INT NOT NULL,
+      userid varchar(255) NOT NULL,
       classid INT NOT NULL,
       FOREIGN KEY (userid) REFERENCES users(id),
       FOREIGN KEY (classid) REFERENCES classes(id)
@@ -32,7 +32,7 @@ const tables = async () => {
   await sql`
     CREATE TABLE IF NOT EXISTS savedClasses (
       id SERIAL PRIMARY KEY,
-      userid INT NOT NULL,
+      userid varchar(255) NOT NULL,
       collectionName varchar(255) NOT NULL,
       classid INT NOT NULL,
       UNIQUE(collectionName, classid),

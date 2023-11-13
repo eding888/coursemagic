@@ -2,9 +2,22 @@
 // to provide easy access to database manipulations/operations.
 import sql from "./sql"
 
-interface User {
+// Interfaces for use when accessing these methods for their paramters
+export interface User {
   id: string,
   name: string
+}
+
+export interface Class {
+  userid: string,
+  startTime: number,
+  endTime: number,
+  creditHours: number,
+  lectureHall: string
+}
+
+export interface savedClass {
+
 }
 
 export const getAllUsers = async () => {
@@ -46,4 +59,22 @@ export const addUser = async (user: User) => {
     return null;
   }
 
+}
+
+export const addClass = async (newClass: Class) => {
+  try {
+    const classid = await sql`
+      INSERT INTO classes(userid, startTime, endTime, creditHours, lectureHall)
+      VALUES (${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      RETURNING id;
+    `
+    await sql`
+      INSERT INTO userCurrentClasses(userid, classid)
+      VALUES (${newClass.userid}, ${classid[0].id});
+    `
+    return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
