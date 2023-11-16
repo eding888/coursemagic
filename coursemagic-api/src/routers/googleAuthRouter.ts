@@ -1,6 +1,7 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import passport from 'passport';
+import { User } from '../database/postgreDataAccess';
 
 const googleAuthRouter = express.Router();
 
@@ -13,6 +14,9 @@ googleAuthRouter.get('/auth/google',
 googleAuthRouter.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/fail' }),
   (req: Request, res: Response) => {
+    if(req.user) {
+      console.log((req.user as User).id);
+    }
     // Successful request goes to dashboard. User will be availble in cookie in req.user
     res.redirect('/dashboard');
   }

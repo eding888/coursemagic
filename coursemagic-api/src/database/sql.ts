@@ -5,5 +5,6 @@ if(!url) {
   url = "";
 }
 
+// The great sql helper funciton is born!!
 const sql: Sql = postgres(url);
 export default sql;

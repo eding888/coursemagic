@@ -43,6 +43,40 @@ const tables = async () => {
   `
 }
 
+export const clear= async () => {
+  await sql`
+    DROP TABLE IF EXISTS users;
+  `;
+  await sql`
+    DROP TABLE IF EXISTS classes;
+  `
+  await sql`
+    DROP TABLE IF EXISTS userCurrentClasses
+  `
+  await sql`
+    DROP TABLE IF EXISTS savedClasses;
+  `
+}
+
+/**
+ * Initializes all tables for database
+ */
 export const initTables = async () => {
   await tables();
 }
+
+// DANGER, DELETES ALL DATA !
+// BE VERY WEARY.
+
+/**
+ * Deletes all tables and reinitalizes them as empty
+ * @param confirmation WARNING: CLEARS ALL USER DATA
+ */
+export const clearAndResetTables = async (confirmation: boolean) => {
+  if(confirmation){
+    await clear();
+    await tables();
+  }
+}
+
+

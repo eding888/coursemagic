@@ -3,7 +3,9 @@ import session from 'express-session';
 import passport from 'passport';
 require('./googleStrategy');
 
-import { initTables } from './database/tableSchemas';
+import { initTables, clearAndResetTables } from './database/tableSchemas';
+
+import { Class } from './database/postgreDataAccess';
 
 //ROUTER IMPORTS
 import googleAuthRouter from './routers/googleAuthRouter';
@@ -31,3 +33,11 @@ const port = Bun.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+const testShit = async () => {
+  await clearAndResetTables(true);
+  
+}
+
+//testShit();
