@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { VerifyCallback } from 'passport-google-oauth20';
-import { findUserById, addUser, addClass, Class, User } from './database/postgreDataAccess';
+import { getUserById, addUser, addClass, Class, User } from './database/postgreDataAccess';
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Interface defining profile returned by succesful google auth
@@ -24,7 +24,7 @@ passport.use(new GoogleStrategy({
       name: profile.displayName
     }
     console.log(user);
-    const userInDB = await findUserById(profile.id);
+    const userInDB = await getUserById(profile.id);
     if(userInDB && userInDB.length === 0) {
       await addUser(user);
     }

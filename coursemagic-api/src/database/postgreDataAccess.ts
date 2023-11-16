@@ -45,11 +45,11 @@ export const getAllUsers = async () => {
  * @param id user's id
  * @returns User at id
  */
-export const findUserById = async (id: string) => {
+export const getUserById = async (userid: string) => {
   try {
     const user = await sql`
       SELECT * FROM users
-      WHERE ${id} = users.id;
+      WHERE ${userid} = users.id;
    `
     return user[0];
   } catch (error) {
@@ -57,6 +57,60 @@ export const findUserById = async (id: string) => {
     return null;
   }
 
+}
+
+/**
+ * Returns class at specific id
+ * @param classid class's id
+ * @returns Class at id
+ */
+export const getClassById = async (classid: number) => {
+  try {
+    const foundclass = await sql`
+      SELECT * FROM classes
+      WHERE ${classid} = classes.id;
+   `
+    return foundclass[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Returns all of the classes owned by a user
+ * @param userid id of user whose classes are retrieved
+ * @returns Retrieved classes at userid
+ */
+export const getUserClasses = async (userid: string) => {
+  try {
+    const classes = await sql`
+      SELECT * FROM classes
+      WHERE ${userid} = classes.userid;
+   `
+    return classes;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Returns all of the classes that are currently a user's
+ * @param userid id of uesr whose classes are retrieved
+ * @returns Retrieved classes at userid
+ */
+export const getUserCurrentClasses = async (userid: string) => {
+  try {
+    const classes = await sql`
+      SELECT * FROM usercurrentclasses
+      WHERE ${userid} = usercurrentclasses.userid;
+   `
+    return classes;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 
 /**
@@ -68,7 +122,7 @@ export const addUser = async (user: User) => {
   try {
     const userid = await sql`
       INSERT INTO users
-      VALUES (${user.id}, ${user.name})
+      VALUES(${user.id}, ${user.name})
       RETURNING id;
     `
     return userid[0];
@@ -88,7 +142,7 @@ export const addClass = async (newClass: Class) => {
   try {
     const classid = await sql`
       INSERT INTO classes(userid, startTime, endTime, creditHours, lectureHall)
-      VALUES (${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      VALUES(${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
       RETURNING id;
     `
     return classid[0];
@@ -107,13 +161,16 @@ export const addClass = async (newClass: Class) => {
 export const removeClass = async (classid: number) => {
   try {
     await sql`
-        DELETE FROM classes WHERE id=${classid};
+        DELETE FROM classes
+        WHERE classes.id=${classid};
     `;
     await sql`
-        DELETE FROM userCurrentClasses WHERE id = ${classid};
+        DELETE FROM userCurrentClasses
+        WHERE usercurrentclasses.id = ${classid};
     `;
     await sql`
-        DELETE FROM savedClassses WHERE id = ${classid};
+        DELETE FROM savedClassses WHERE
+        savedclasses.id = ${classid};
     `;
     return true;
   } catch (error) {
@@ -123,6 +180,93 @@ export const removeClass = async (classid: number) => {
 
 };
 
-export const addClassToUserCurrent = async (classid: number, uesrid: number) => {
+/**
+ * Adds a class to a user's current lineup of clasess
+ * @param classid id of class that is being added to user's lineup
+ * @param userid id of user class is being added to
+ * @returns id of currentClass that is added
+ */
+export const addClassToUserCurrent = async (classid: number, userid: string) => {
+  try {
+    const currentClassId = await sql`
+      INSERT INTO usercurrentclasses(userid, classid)
+      VALUES(${userid}, ${classid})
+      RETURNING id;
+    `
+    return currentClassId[0];
 
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Removes a class from the user's current roster of classes
+ * @param classid id of the class to be removed
+ * @returns true on successful deletion
+ */
+export const removeClassFromUserCurrent = async (classid: number) => {
+  try {
+    await sql`
+      DELETE FROM usercurrentclasses
+      WHERE usercurrentclasses.classid = ${classid};
+    `
+    return true;
+
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Adds a user's current classes to a collection
+ * @param userid id of user this class collection is for
+ * @param collectionName name of the collection that is being added to
+ * @returns returns true upon successful save to collection
+ */
+export const saveCurrentClassesToCollection = async (userid: string, collectionName: string) => {
+  try {
+    await sql`
+      INSERT INTO savedClasses(userid, collectionName, classid)
+      SELECT ${userid}, ${collectionName}, classid FROM usercurrentclasses WHERE usercurrentclasses.userid = ${userid}
+      ON CONFLICT DO NOTHING;
+    `
+    return true;
+
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Loads classes from a users collection to user's current classes. Replaces everything currently in current.
+ * @param userid User which collection is from
+ * @param collectionName Collection name to retrieve from
+ * @returns Returns true if the load is successful, or if there is just nothing to load
+ */
+export const loadSavedClassesToCurrent = async (userid: string, collectionName: string) => {
+  try {
+    const collection = await sql`
+      SELECT * from savedClasses
+      WHERE savedClasses.collectionName = ${collectionName};
+    `
+    if(collection.length > 0) {
+      await sql`
+        DELETE FROM usercurrentclasses
+        WHERE usercurrentclasses.userid = ${userid};
+      `
+
+      await sql`
+        INSERT INTO usercurrentclasses(userid, classid)
+        SELECT userid, classid FROM savedClasses WHERE (savedClasses.collectionName = ${collectionName} AND savedClasses.userid = ${userid});
+      `
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
