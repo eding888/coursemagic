@@ -24,6 +24,7 @@ const tables = async () => {
       id SERIAL PRIMARY KEY,
       userid varchar(255) NOT NULL,
       classid INT NOT NULL,
+      UNIQUE(userid, classid),
       FOREIGN KEY (userid) REFERENCES users(id),
       FOREIGN KEY (classid) REFERENCES classes(id)
     );
@@ -36,6 +37,7 @@ const tables = async () => {
       collectionName varchar(255) NOT NULL,
       classid INT NOT NULL,
       UNIQUE(collectionName, classid),
+      UNIQUE(userid, collectionName),
       FOREIGN KEY (classid) REFERENCES classes(id),
       FOREIGN KEY (userid) REFERENCES users(id)
     );

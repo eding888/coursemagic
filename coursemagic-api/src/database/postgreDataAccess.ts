@@ -1,4 +1,4 @@
-// TS methods that utilize sql queries to my ElephantSQL database 
+// TS methods that utilize sql queries to my ElephantSQL database
 // to provide easy access to database manipulations/operations.
 
 import sql from "./sql"
@@ -221,13 +221,17 @@ export const removeClassFromUserCurrent = async (classid: number) => {
 }
 
 /**
- * Adds a user's current classes to a collection
+ * Adds a user's current classes to a collection. Replaces any existing classes in the collection.
  * @param userid id of user this class collection is for
  * @param collectionName name of the collection that is being added to
  * @returns returns true upon successful save to collection
  */
 export const saveCurrentClassesToCollection = async (userid: string, collectionName: string) => {
   try {
+    await sql`
+      DELETE FROM savedClasses
+      WHERE (savedClasses.collectionName = ${collectionName} AND savedClasses.userid = ${userid});
+    `
     await sql`
       INSERT INTO savedClasses(userid, collectionName, classid)
       SELECT ${userid}, ${collectionName}, classid FROM usercurrentclasses WHERE usercurrentclasses.userid = ${userid}
@@ -265,6 +269,26 @@ export const loadSavedClassesToCurrent = async (userid: string, collectionName: 
       `
     }
     return true;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+/**
+ * Deletes a user's collection of saved classes
+ * @param userid User whose collection to delete
+ * @param collectionName Collection name to delete
+ * @returns true on successful deletion
+ */
+export const deleteCollection = async (userid: string, collectionName: string) => {
+  try {
+    await sql`
+      DELETE FROM savedClasses
+      WHERE savedClasses.collectionName = ${collectionName} AND savedClasses.userid = ${userid};
+    `
+    return true;
+
   } catch (error) {
     console.error(error);
     return null;

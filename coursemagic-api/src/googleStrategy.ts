@@ -29,15 +29,6 @@ passport.use(new GoogleStrategy({
       await addUser(user);
     }
 
-    const newClass: Class = {
-      userid: user.id,
-      startTime: 10,
-      endTime: 15,
-      creditHours: 3,
-      lectureHall: "hanes art center"
-    };
-    await addClass(newClass);
-
     // Create user profile to be stored in cookie. This cookie will be
     // accessible in req.user
     done(null, user);
