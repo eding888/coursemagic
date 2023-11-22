@@ -8,8 +8,9 @@ require('./googleStrategy');
 import { initTables, clearAndResetTables } from './database/tableSchemas';
 
 //ROUTER IMPORTS
-import { validateToken } from './middlewareVerifications';
+import { validateToken, checkCsrf} from './middlewareVerifications';
 import googleAuthRouter from './routers/googleAuthRouter';
+import sessionManagementRouter from './routers/sessionManagementRouter';
 
 
 const app = express();
@@ -24,9 +25,9 @@ const corsOptions = {
 // app.use(cors(corsOptions));
 
 // Sets up express server to be compatible with google passport cookie session setting
-app.set('trust proxy', 1);
+app.set('trust proxy', true);
 app.use(session({
-  secret: Bun.env.secret || "",
+  secret: Bun.env.SECRET || "",
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -35,21 +36,22 @@ app.use(session({
     maxAge: 60 * 60 * 1000
   }
 }));
+app.use(passport.initialize());
 app.use(passport.session());
 
 // Request limiter to not allow copius amount of requests
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
 	limit: 1000,
-	standardHeaders: 'draft-7',
-	legacyHeaders: false
 });
-app.use(limiter);
+//app.use(limiter);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.use(googleAuthRouter);
+app.use(googleAuthRouter); // handles google auth login requests
 app.use(validateToken);  //validate token middleware
+app.use('/api', sessionManagementRouter);
+app.use(checkCsrf); // validate csrf middleware.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

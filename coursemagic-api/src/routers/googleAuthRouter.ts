@@ -12,7 +12,7 @@ googleAuthRouter.get('/auth/google',
 
 // Callback after successful request where stuff can be done.
 googleAuthRouter.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/fail' }),
+  passport.authenticate('google', { failureRedirect: '/home/googleAuthFailure' }),
   (req: Request, res: Response) => {
     if(req.user) {
       console.log((req.user as User).id);

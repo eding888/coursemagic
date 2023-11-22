@@ -17,13 +17,10 @@ passport.use(new GoogleStrategy({
   },
   // Callback for successful google auth
   async function(accessToken: string, refreshToken: string, profile: UserProfile, done: VerifyCallback) {
-    console.log(accessToken);
-    console.log(refreshToken);
     const user: User = {
       id: profile.id,
       name: profile.displayName
     }
-    console.log(user);
     const userInDB = await getUserById(profile.id);
     if(userInDB && userInDB.length === 0) {
       await addUser(user);
