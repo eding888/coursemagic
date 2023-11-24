@@ -125,7 +125,7 @@ export const addUser = async (user: User) => {
       VALUES(${user.id}, ${user.name})
       RETURNING id;
     `
-    return userid[0];
+    return userid[0].id;
   } catch (error) {
     console.error(error);
     return null;
@@ -138,6 +138,24 @@ export const addUser = async (user: User) => {
  * @param newClass object of Class type to be added
  * @returns added classes' id
  */
+export const addClassAsCurrent = async (newClass: Class) => {
+  try {
+    const classid = await sql`
+      INSERT INTO classes(userid, startTime, endTime, creditHours, lectureHall)
+      VALUES(${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      RETURNING id;
+    `
+    await sql`
+      INSERT INTO usercurrentclasses(userid, classid)
+      VALUES(${newClass.userid}, ${classid[0].id})
+    `
+    return classid[0].id;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export const addClass = async (newClass: Class) => {
   try {
     const classid = await sql`
@@ -145,7 +163,7 @@ export const addClass = async (newClass: Class) => {
       VALUES(${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
       RETURNING id;
     `
-    return classid[0];
+    return classid[0].id;
   } catch (error) {
     console.error(error);
     return null;
@@ -193,7 +211,7 @@ export const addClassToUserCurrent = async (classid: number, userid: string) => 
       VALUES(${userid}, ${classid})
       RETURNING id;
     `
-    return currentClassId[0];
+    return currentClassId[0].id;
 
   } catch (error) {
     console.error(error);

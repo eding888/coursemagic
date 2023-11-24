@@ -3,7 +3,7 @@ import session from 'express-session';
 import passport from 'passport';
 import { rateLimit } from 'express-rate-limit';
 import cors from 'cors';
-require('./googleStrategy');
+require('./utils/googleStrategy');
 
 import { initTables, clearAndResetTables } from './database/tableSchemas';
 
