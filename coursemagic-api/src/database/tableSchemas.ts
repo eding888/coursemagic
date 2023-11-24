@@ -1,6 +1,7 @@
 import sql from "./sql";
 
 const tables = async () => {
+  // id for users is a string instead of a number. this is a pain in the ass but im gangsta
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id varchar(255) UNIQUE PRIMARY KEY,

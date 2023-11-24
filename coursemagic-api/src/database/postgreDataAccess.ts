@@ -125,7 +125,7 @@ export const addUser = async (user: User) => {
       VALUES(${user.id}, ${user.name})
       RETURNING id;
     `
-    return userid[0].id;
+    return userid[0].id as string;
   } catch (error) {
     console.error(error);
     return null;
@@ -149,7 +149,7 @@ export const addClassAsCurrent = async (newClass: Class) => {
       INSERT INTO usercurrentclasses(userid, classid)
       VALUES(${newClass.userid}, ${classid[0].id})
     `
-    return classid[0].id;
+    return classid[0].id as number;
   } catch (error) {
     console.error(error);
     return null;
@@ -163,7 +163,7 @@ export const addClass = async (newClass: Class) => {
       VALUES(${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
       RETURNING id;
     `
-    return classid[0].id;
+    return classid[0].id as number;
   } catch (error) {
     console.error(error);
     return null;
@@ -211,7 +211,7 @@ export const addClassToUserCurrent = async (classid: number, userid: string) => 
       VALUES(${userid}, ${classid})
       RETURNING id;
     `
-    return currentClassId[0].id;
+    return currentClassId[0].id as number;
 
   } catch (error) {
     console.error(error);

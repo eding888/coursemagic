@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { User, Class, getUserClasses, getUserCurrentClasses, addClassAsCurrent } from '../database/postgreDataAccess';
+import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClassAsCurrent, removeClass } from '../database/postgreDataAccess';
 import { findKeyWhereNull } from '../utils/jsHelper';
 
 const classRouter = express.Router();
@@ -8,32 +8,60 @@ const classRouter = express.Router();
 // Retrieves all classes attributed to a user
 classRouter.get('/userAllClasses', async (request: Request, response: Response) => {
   const user = request.user as User;
-  const classes = getUserClasses(user.id);
+  const classes = await getUserClasses(user.id);
   if(!classes) {
     return response.status(400).json({error: "Error with sql retrieval."});
   }
   response.status(200).json(classes);
 });
 
+// Retrieves classes that are current to a user
 classRouter.get('/userCurrentClasses', async (request: Request, response: Response) => {
   const user = request.user as User;
-  const classes = getUserCurrentClasses(user.id);
+  const classes = await getUserCurrentClasses(user.id);
   if(!classes) {
     return response.status(400).json({error: "Error with sql retrieval."});
   }
   response.status(200).json(classes);
 });
 
+// Adds class to users current classes
 classRouter.post('/addUserCurrentClass', async (request: Request, response: Response) => {
   const user = request.user as User;
   const addClass: Class = request.body as Class;
+  addClass.userid = user.id;
   const nullKey = findKeyWhereNull(addClass);
   if(nullKey) {
     return response.status(400).json({error: `Missing fields: ${nullKey}`})
   }
-  const classes = getUserCurrentClasses(user.id);
-  if(!classes) {
+  const result = await addClassAsCurrent(addClass);
+  if(!result) {
     return response.status(400).json({error: "Error with sql retrieval."});
   }
-  response.status(200).json(classes);
+  response.status(200).json({addedId: result});
+});
+
+// Deletes class at id
+classRouter.delete('/removeClass', async (request: Request, response: Response) => {
+  const user = request.user as User;
+  const classid: number = request.body.classid;
+  if(!classid) {
+    response.status(400).json({error: "No classid provied"});
+  }
+
+  const foundClass = await getClassById(classid);
+
+  if(!foundClass) {
+    return response.status(400).json({error: "Error with sql retrieval."});
+  }
+  if(foundClass.userid !== user.id) {
+    return response.status(400).json({error: "This is not your class, you may not delete."});
+  }
+
+  const result = await(removeClass);
+  if(!result) {
+    return response.status(400).json({error: "Error with sql retrieval."});
+  }
+  response.status(200).end();
+
 });
