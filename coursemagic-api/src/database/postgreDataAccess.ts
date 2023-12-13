@@ -122,7 +122,7 @@ export const addUser = async (user: User) => {
   try {
     const userid = await sql`
       INSERT INTO users
-      VALUES(${user.id}, ${user.name})
+      VALUES(${user.id}, ${user.name}, 'none')
       RETURNING id;
     `
     return userid[0].id as string;
@@ -133,6 +133,26 @@ export const addUser = async (user: User) => {
 
 }
 
+/**
+ * Sets a user's refresh token
+ * @param userid user's id
+ * @param refresh desired refresh token
+ * @returns true if update is successful, null if not
+ */
+export const setUserRefresh = async (userid: string, refresh: string) => {
+  try {
+    await sql`
+      UPDATE users
+      SET refreshToken = ${refresh}
+      WHERE users.id = ${userid};
+    `
+    return true
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+
+}
 /**
  * Adds class to table
  * @param newClass object of Class type to be added

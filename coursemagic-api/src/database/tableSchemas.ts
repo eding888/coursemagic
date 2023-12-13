@@ -5,7 +5,8 @@ const tables = async () => {
   await sql`
     CREATE TABLE IF NOT EXISTS users (
       id varchar(255) UNIQUE PRIMARY KEY,
-      name varchar(255) NOT NULL
+      name varchar(255) NOT NULL,
+      refreshToken varchar(255) NOT NULL
     );
   `
   await sql`
@@ -47,17 +48,17 @@ const tables = async () => {
 
 export const clear= async () => {
   await sql`
-    DROP TABLE IF EXISTS users;
+    DROP TABLE savedClasses;
+  `
+  await sql`
+    DROP TABLE userCurrentClasses
+  `
+  await sql`
+    DROP TABLE classes;
+  `
+  await sql`
+    DROP TABLE users;
   `;
-  await sql`
-    DROP TABLE IF EXISTS classes;
-  `
-  await sql`
-    DROP TABLE IF EXISTS userCurrentClasses
-  `
-  await sql`
-    DROP TABLE IF EXISTS savedClasses;
-  `
 }
 
 /**

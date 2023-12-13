@@ -8,7 +8,7 @@ require('./utils/googleStrategy');
 import { initTables, clearAndResetTables } from './database/tableSchemas';
 
 //ROUTER IMPORTS
-import { validateToken, checkCsrf} from './middlewareVerifications';
+import { validateToken, checkCsrf} from './utils/middlewareVerifications';
 import googleAuthRouter from './routers/googleAuthRouter';
 import sessionManagementRouter from './routers/sessionManagementRouter';
 
@@ -62,10 +62,3 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-
-const testShit = async () => {
-  await clearAndResetTables(true);
-  
-}
-
-//testShit();
