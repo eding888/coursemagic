@@ -1,6 +1,6 @@
   import { Button } from "@mui/material"
   import { useState, useEffect } from "react";
-  import Navbar from "./components/Navbar"
+  import Navbar from "../components/Navbar"
   import Typography from '@mui/material/Typography';
   import { Box } from '@mui/system';
   import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -8,8 +8,10 @@
   import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
   import DirectionsIcon from '@mui/icons-material/Directions';
 
-  import "./index.css"
-  function App() {
+  import { googleLogin } from "../utils/Routing";
+
+  import "../index.css"
+  function Landing() {
     const [scroll, setscroll] = useState(0);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const mobile = (screenWidth < 900);
@@ -17,7 +19,7 @@
       const handleScroll = () => {
         if (window.scrollY > (mobile ? 1200 : 700)) {
           setscroll(2);
-        } else if (window.scrollY >= 200) {
+        } else if (window.scrollY >= 300) {
           setscroll(1);
         } else {
           setscroll(0);
@@ -48,11 +50,11 @@
     return (
       <>
         <Navbar></Navbar>
-        <Box sx={{padding: "10px", overflow: "hidden", height: (mobile ? "2900px" : "2000px"), width:"100vw", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
+        <Box sx={{padding: "10px", overflow: "hidden", height: (mobile ? "3000px" : "2000px"), width:"100vw", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
           <Box sx={{display: "flex", width: "100%", justifyContent: "center", alignItems: "center", height: "88vh", mb: "45px"}}>
             <Box sx={{display: "flex", flexDirection: "column", width: (mobile ? "100%" : "45%"), textAlign: (mobile ? "center" : "left"), alignItems: 'center', justifyContent: 'center'}}>
               <Typography variant="h2" sx={{minWidth: "360px", marginLeft: (mobile ? "0px" : "100px"), color: "white", fontWeight: "bold"}}>Signing up for Classes Has Never Been More<br></br> <span style={{ color: 'blue' }}>	&#10024; Magical &#10024;</span></Typography>
-              <Button variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Register Now</Button>
+              <Button variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Sign Up with Google</Button>
             </Box>
             <Box
               display= {mobile ? "none" : "flex"}
@@ -71,7 +73,7 @@
             <Typography variant="h2" sx={{width: "80%", textAlign:"center", color: "white", fontWeight: "bold"}}>University Class Registration is Painful. </Typography>
             <Box sx={{display: "flex", alignItems: "center", flexDirection: (mobile ? "column-reverse" : "row"), gap: "30px"}}>
              <Box>
-                <Typography variant="h5" sx={{textAlign: (mobile ? "center" : "left"), mb: "20px", color: "blue", fontWeight: "450"}}>Picking your Classes is Always Subject to Murphy's Law:</Typography>
+                <Typography variant="h5" sx={{textAlign: (mobile ? "center" : "left"), mb: "20px", color: "blue", fontWeight: "450"}}>Picking your classes can and will go wrong.</Typography>
                 <ul>
                   <li>
                     <Typography variant= "h6" sx={{display: "flex", alignItems: "center", gap: "20px"}}>
@@ -147,4 +149,4 @@
     )
   }
 
-  export default App;
+  export default Landing;

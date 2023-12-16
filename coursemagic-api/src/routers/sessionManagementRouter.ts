@@ -13,7 +13,7 @@ sessionManagementRouter.get('/getSession', (request: Request, response: Response
 });
 
 // Logs the user out
-sessionManagementRouter.get('/logout', (request: Request, response: Response) => {
+sessionManagementRouter.post('/logout', (request: Request, response: Response) => {
   response.clearCookie('connect.sid', {domain: "localhost"});
   response.clearCookie('refresh', {domain: "localhost"});
   response.redirect("/home");

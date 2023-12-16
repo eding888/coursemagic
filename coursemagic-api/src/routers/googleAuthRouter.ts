@@ -35,7 +35,7 @@ googleAuthRouter.get('/auth/google/callback',
 
     await setUserRefresh(user.id, refresh);
     // Successful request goes to dashboard. User will be availble in cookie in req.user
-    res.redirect('/dashboard');
+    res.redirect('http://localhost:5173/dashboard');
   }
 );
 

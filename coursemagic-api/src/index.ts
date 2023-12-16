@@ -34,7 +34,8 @@ const corsOptions = {
 };
 
 // Strict cors options used in production
-if(Bun.env.RUN === "prod") app.use(cors(corsOptions));
+if(Bun.env.RUN === "prod") app.use(cors(corsOptions))
+else app.use(cors());
 
 // Sets up express server to be compatible with google passport cookie session setting
 app.use(session({
