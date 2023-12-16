@@ -4,6 +4,8 @@ import { Request, Response } from 'express';
 import { NextFunction } from "express";
 import { User, getUserById } from '../database/postgreDataAccess';
 import Tokens from 'csrf';
+import jwt from 'jsonwebtoken';
+
 const tokens = new Tokens();
 
 // Validates that for requests that user cookie is valid and exists
@@ -19,6 +21,11 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
     return res.status(401).json( {error: "User at token not found."} );
   }
 
+  try {
+    jwt.verify(user.auth, Bun.env.SECRET || "hi");
+  } catch(error) {
+    return res.status(401).json({error: "Auth expired"});
+  }
   next();
 };
 

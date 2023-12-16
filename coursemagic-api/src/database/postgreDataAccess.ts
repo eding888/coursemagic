@@ -5,6 +5,7 @@ import sql from "./sql"
 
 // Interfaces for use when accessing these methods for their paramters
 export interface User {
+  auth: string,
   id: string,
   name: string
 }
@@ -118,14 +119,14 @@ export const getUserCurrentClasses = async (userid: string) => {
  * @param user object of User type to be added
  * @returns added user's id
  */
-export const addUser = async (user: User) => {
+export const addUser = async (userid: string, name: string) => {
   try {
-    const userid = await sql`
+    const id = await sql`
       INSERT INTO users
-      VALUES(${user.id}, ${user.name}, 'none')
+      VALUES(${userid}, ${name}, 'none')
       RETURNING id;
     `
-    return userid[0].id as string;
+    return userid[0];
   } catch (error) {
     console.error(error);
     return null;

@@ -1,7 +1,9 @@
 import passport from 'passport';
 import { VerifyCallback } from 'passport-google-oauth20';
-import { getUserById, addUser, setUserRefresh, Class, User } from '../database/postgreDataAccess';
+import { getUserById, addUser, Class, User } from '../database/postgreDataAccess';
+
 import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -19,24 +21,18 @@ passport.use(new GoogleStrategy({
   },
   // Callback for successful google auth
   async function(accessToken: string, refreshToken: string, profile: UserProfile, done: VerifyCallback) {
+
+    const expiresIn = 10 * 60;
+    const auth: string = jwt.sign({id: profile.id}, Bun.env.SECRET || "hi", {expiresIn});
     const user: User = {
+      auth: auth,
       id: profile.id,
       name: profile.displayName
     }
-    console.log('id', profile.id);
     const userInDB = await getUserById(profile.id);
-    console.log('us', userInDB);
     if(!userInDB || userInDB.length === 0) {
-      console.log('hiii');
-      await addUser(user);
+      await addUser(profile.id, profile.displayName);
     }
-    
-    const expiresIn = 24 * 60 * 60;
-    const refresh = jwt.sign({id: profile.id}, Bun.env.SECRET || "hi", {expiresIn});
-
-    await setUserRefresh(profile.id, refresh);
-
-
     // Create user profile to be stored in cookie. This cookie will be
     // accessible in req.user
     done(null, user);
