@@ -3,6 +3,7 @@ import session from 'express-session';
 import passport from 'passport';
 import { rateLimit } from 'express-rate-limit';
 import cors from 'cors';
+import cookies from 'cookie-parser';
 require('./utils/googleStrategy');
 
 import { initTables, clearAndResetTables } from './database/tableSchemas';
@@ -11,9 +12,12 @@ import { initTables, clearAndResetTables } from './database/tableSchemas';
 import { validateToken, checkCsrf} from './utils/middlewareVerifications';
 import googleAuthRouter from './routers/googleAuthRouter';
 import sessionManagementRouter from './routers/sessionManagementRouter';
+import refresh from './routers/refresh';
 
 
 const app = express();
+
+app.use(cookies());
 
 // Request limiter to not allow copius amount of requests
 const limiter = rateLimit({
@@ -50,6 +54,7 @@ app.use(passport.session());
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.use(googleAuthRouter); // handles google auth login requests
+app.use('/api', refresh); // allows for token refresh
 app.use(validateToken);  //validate token middleware
 app.use('/api', sessionManagementRouter);
 app.use(checkCsrf); // validate csrf middleware.

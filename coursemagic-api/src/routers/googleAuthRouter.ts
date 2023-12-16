@@ -22,9 +22,11 @@ googleAuthRouter.get('/auth/google/callback',
     }
     const user = req.user as User;
 
+    // Create refresh token
     const expiresIn = 24 * 60 * 60;
     const refresh: string = jwt.sign({id: user.id}, Bun.env.SECRET || "hi", {expiresIn});
-    console.log('refresh', refresh);
+    
+    // Save refresh to cookies
     res.cookie('refresh', refresh, {
       //domain: "localhost:3000/dashboard",
       secure: true,

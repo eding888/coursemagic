@@ -9,12 +9,11 @@ const sessionManagementRouter = express.Router();
 // Retrieves new session / csrf token
 sessionManagementRouter.get('/getSession', (request: Request, response: Response) => {
   const token = tokens.create(Bun.env.SECRET || "bomboclaattttt");
-  const user = request.user as User;
   response.status(200).json({ csrf: token });
 });
 
 // Logs the user out
-sessionManagementRouter.post('/logout', (request: Request, response: Response) => {
+sessionManagementRouter.get('/logout', (request: Request, response: Response) => {
   response.clearCookie('connect.sid', {domain: "localhost"});
   response.clearCookie('refresh', {domain: "localhost"});
   response.redirect("/home");

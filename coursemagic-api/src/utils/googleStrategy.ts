@@ -14,6 +14,10 @@ interface UserProfile {
   emails: Array<{ value: string }>;
 }
 
+export interface Auth{
+  id: string;
+}
+
 passport.use(new GoogleStrategy({
     clientID: Bun.env.GOOGLE_CLIENT_ID,
     clientSecret: Bun.env.GOOGLE_CLIENT_SECRET,
@@ -40,7 +44,6 @@ passport.use(new GoogleStrategy({
 ));
 
 
-// IDEK what these do but it works so...
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
