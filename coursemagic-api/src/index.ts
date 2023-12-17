@@ -28,14 +28,20 @@ app.use(limiter);
 
 // Set cors to only allow same-site requests
 const corsOptions = {
-  origin: 'domain',
+  origin: Bun.env.URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // Allow cookies to be sent cross-origin
+};
+
+const testCorsOptions = {
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true // Allow cookies to be sent cross-origin
 };
 
 // Strict cors options used in production
 if(Bun.env.RUN === "prod") app.use(cors(corsOptions))
-else app.use(cors());
+else app.use(cors(testCorsOptions));
 
 // Sets up express server to be compatible with google passport cookie session setting
 app.use(session({
@@ -44,7 +50,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     sameSite: Bun.env.RUN === "test" ? "lax" : "strict", // TODO: CHANGE THESE FOR PRODUCTION !!
-    secure: Bun.env.RUN === "test" ? "auto" : true,
+    secure: Bun.env.RUN === "test" ? false : true,
+    httpOnly: Bun.env.RUN === "test" ? false : true,
     maxAge: 60 * 60 * 1000
   }
 }));

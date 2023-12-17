@@ -16,7 +16,7 @@ sessionManagementRouter.get('/getSession', (request: Request, response: Response
 sessionManagementRouter.post('/logout', (request: Request, response: Response) => {
   response.clearCookie('connect.sid', {domain: "localhost"});
   response.clearCookie('refresh', {domain: "localhost"});
-  response.redirect("/home");
+  response.status(200).end();
 });
 
 

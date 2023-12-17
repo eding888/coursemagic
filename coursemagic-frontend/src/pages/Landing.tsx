@@ -8,8 +8,6 @@
   import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
   import DirectionsIcon from '@mui/icons-material/Directions';
 
-  import { googleLogin } from "../utils/Routing";
-
   import "../index.css"
   function Landing() {
     const [scroll, setscroll] = useState(0);
@@ -54,7 +52,7 @@
           <Box sx={{display: "flex", width: "100%", justifyContent: "center", alignItems: "center", height: "88vh", mb: "45px"}}>
             <Box sx={{display: "flex", flexDirection: "column", width: (mobile ? "100%" : "45%"), textAlign: (mobile ? "center" : "left"), alignItems: 'center', justifyContent: 'center'}}>
               <Typography variant="h2" sx={{minWidth: "360px", marginLeft: (mobile ? "0px" : "100px"), color: "white", fontWeight: "bold"}}>Signing up for Classes Has Never Been More<br></br> <span style={{ color: 'blue' }}>	&#10024; Magical &#10024;</span></Typography>
-              <Button variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Sign Up with Google</Button>
+              <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Sign Up with Google</Button>
             </Box>
             <Box
               display= {mobile ? "none" : "flex"}
@@ -142,7 +140,7 @@
                 </Typography>
               </Box>
             </Box>
-            <Button variant="contained" sx={{width: "30%", height: "150px", marginTop: "50px"}}>Try CourseMagic for Free!</Button>
+            <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant="contained" sx={{width: "30%", height: "150px", marginTop: "50px"}}>Try CourseMagic for Free!</Button>
           </Box>
         </Box>
       </>

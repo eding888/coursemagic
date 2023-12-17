@@ -3,9 +3,15 @@ import Toolbar from '@mui/material/Toolbar';
 import { Button } from "@mui/material"
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
+import { logout } from '../utils/Routing';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar() {
+function DashNavbar() {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate('/home');
+  }
   return (
     <AppBar sx={{backgroundColor:"transparent"}}position="sticky">
       <CssBaseline />
@@ -19,11 +25,11 @@ function Navbar() {
         />
         <div></div>
         <Box sx={{display: "flex", gap: "20px"}}>
-          <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant='contained'><GoogleIcon sx={{mr: "10px"}}></GoogleIcon>Sign In With Google</Button>
+        <Button onClick={handleLogout} variant='contained'>Log Out</Button>
         </Box>
       </Toolbar>
     </AppBar>
   );
 }
 
-export default Navbar;
+export default DashNavbar;
