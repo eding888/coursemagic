@@ -51,8 +51,7 @@ app.use(session({
   cookie: {
     sameSite: Bun.env.RUN === "test" ? "lax" : "strict", // TODO: CHANGE THESE FOR PRODUCTION !!
     secure: Bun.env.RUN === "test" ? false : true,
-    httpOnly: Bun.env.RUN === "test" ? false : true,
-    maxAge: 60 * 60 * 1000
+    httpOnly: Bun.env.RUN === "test" ? false : true
   }
 }));
 app.use(passport.initialize());

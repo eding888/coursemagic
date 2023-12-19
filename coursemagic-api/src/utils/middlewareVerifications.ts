@@ -11,7 +11,6 @@ const tokens = new Tokens();
 // Validates that for requests that user cookie is valid and exists
 export const validateToken = (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user as User;
-  console.log(user);
   if(!user) {
     return res.status(401).json( {error: "No user token found."} );
   }

@@ -43,12 +43,6 @@ export const logout = async () => {
     await axios.post(`${backendUrl}/api/logout`,{}, {withCredentials: true});
     return true;
   } catch (error) {
-    await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
-    try {
-      await axios.post(`${backendUrl}/api/logout`,{}, {withCredentials: true});
-      return true
-    } catch (error) {
-      return false;
-    }
+    return false;
   }
 }

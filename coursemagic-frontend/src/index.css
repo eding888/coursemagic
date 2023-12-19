@@ -73,6 +73,24 @@
     display: flex;
   }
 }
+
+@keyframes increase-margin {
+  0% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: 50px;
+  }
+}
+
+@keyframes decrease-margin {
+  0% {
+    margin-left: 50px;
+  }
+  100% {
+    margin-left: 0px;
+  }
+}
 .slide-and-fade {
   animation: slide-and-fade 1s forwards;
 }
@@ -103,4 +121,12 @@
 
 .fade-in {
   animation: fade-in 0.5s forwards;
+}
+
+.increase-margin {
+  animation: increase-margin 0.5s forwards;
+}
+
+.decrease-margin {
+  animation: decrease-margin 0.5s forwards;
 }

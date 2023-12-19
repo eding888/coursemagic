@@ -3,7 +3,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { Button } from "@mui/material"
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
-import { logout } from '../utils/Routing';
+import { logout } from '../utils/routing';
 import { useNavigate } from 'react-router-dom';
 
 function DashNavbar() {
@@ -15,7 +15,7 @@ function DashNavbar() {
   return (
     <AppBar sx={{backgroundColor:"transparent"}}position="sticky">
       <CssBaseline />
-      <Toolbar sx={{display: "flex", justifyContent: "space-around", backgroundColor: "white"}}>
+      <Toolbar sx={{display: "flex", justifyContent: "space-around", backgroundColor: "white", height: "64px"}}>
         <Box
           component="img"
           sx={{
