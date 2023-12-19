@@ -9,6 +9,7 @@
   import DirectionsIcon from '@mui/icons-material/Directions';
 
   import "../index.css"
+  
   function Landing() {
     const [scroll, setscroll] = useState(0);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);

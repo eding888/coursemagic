@@ -28,7 +28,13 @@ export const getSession = async () => {
     const session = await axios.get(`${backendUrl}/api/getSession`, {withCredentials: true});
     return session.data.csrf;
   } catch (error) {
-    return false;
+    await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    try {
+      const session = await axios.get(`${backendUrl}/api/getSession`, {withCredentials: true});
+      return session.data.csrf;
+    } catch (error) {
+      return false;
+    }
   }
 }
 
@@ -37,6 +43,12 @@ export const logout = async () => {
     await axios.post(`${backendUrl}/api/logout`,{}, {withCredentials: true});
     return true;
   } catch (error) {
-    return false;
+    await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    try {
+      await axios.post(`${backendUrl}/api/logout`,{}, {withCredentials: true});
+      return true
+    } catch (error) {
+      return false;
+    }
   }
 }

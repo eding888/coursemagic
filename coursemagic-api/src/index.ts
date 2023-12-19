@@ -21,8 +21,8 @@ app.use(cookies());
 
 // Request limiter to not allow copius amount of requests
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000,
-	limit: 1000,
+	windowMs: 60 * 1000,
+	limit: 60,
 });
 app.use(limiter);
 

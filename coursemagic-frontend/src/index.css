@@ -31,6 +31,48 @@
   }
 }
 
+@keyframes slide-menu-out {
+  0% {
+    width: 50px;
+  }
+  100% {
+    width: 300px;
+  }
+}
+
+@keyframes slide-menu-in {
+  0% {
+    width: 300px;
+  }
+  100% {
+    width: 50px;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 100%
+  }
+  100% {
+    opacity: 0%;
+    display: none;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0%;
+    display: none;
+  }
+  70% {
+    opacity: 0%;
+    display: none;
+  }
+  100% {
+    opacity: 100%;
+    display: flex;
+  }
+}
 .slide-and-fade {
   animation: slide-and-fade 1s forwards;
 }
@@ -45,4 +87,20 @@
 
 .wiggle {
   animation: wiggle 2s infinite;
+}
+
+.slide-menu-out {
+  animation: slide-menu-out 1s forwards;
+}
+
+.slide-menu-in {
+  animation: slide-menu-in 1s forwards;
+}
+
+.fade-out {
+  animation: fade-out 0.3s forwards;
+}
+
+.fade-in {
+  animation: fade-in 0.5s forwards;
 }
