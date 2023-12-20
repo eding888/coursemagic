@@ -19,7 +19,7 @@ function Navbar() {
         />
         <div></div>
         <Box sx={{display: "flex", gap: "20px"}}>
-          <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant='contained'><GoogleIcon sx={{mr: "10px"}}></GoogleIcon>Sign In With Google</Button>
+          <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant='contained'><GoogleIcon sx={{mr: "10px"}}></GoogleIcon>Sign In</Button>
         </Box>
       </Toolbar>
     </AppBar>

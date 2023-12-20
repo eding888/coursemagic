@@ -68,7 +68,7 @@ app.use(checkCsrf); // validate csrf middleware.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-initTables();
+//initTables();
 
 const port = Bun.env.PORT || 3000;
 app.listen(port, () => {
