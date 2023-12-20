@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import DashNavbar from "../components/DashNavbar"
-import { getSession } from "../utils/Routing";
+import { getSession } from "../utils/routing";
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+
+import DirectionsIcon from '@mui/icons-material/Directions';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import DownloadIcon from '@mui/icons-material/Download';
+import AddIcon from '@mui/icons-material/Add';
 
 import "../index.css"
 
@@ -19,6 +24,9 @@ function Dashboard() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const mobile = (screenWidth < 900);
   const med = (screenWidth < 1170);
+
+  //State for credit hours
+  const [creditHours, setCreditHours] = useState(0);
 
   // I want the menu to close when screen get samll
   if(!med && menuPopped) setMenuPopped(false);
@@ -67,7 +75,7 @@ function Dashboard() {
   return(
     <>
       <DashNavbar></DashNavbar>
-      <Box sx={{display: "flex"}}>
+      <Box sx={{display: "flex", overflow: "hidden"}}>
         {
           // If mobile view, then we need the hamburger menu
           !med
@@ -84,10 +92,10 @@ function Dashboard() {
               </Box>
             </Box>
         }
-        <Box className={med ? "increase-margin" : "decrease-margin"}  sx={{width: "100%", height: "calc(100vh - 70px)", padding: "30px"}}>
-          <Box sx={{width: "100%", height: "100%", display: "flex"}}>
-            <Box sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: "100%", width: mobile ? "300px" : "400px", boxShadow: 3}}>
-              <Typography variant={mobile ? "h6" : "h5"} sx={{mt: "10px"}}>Current Classes</Typography>
+        <Box className={med ? "increase-margin" : "decrease-margin"}sx={{width: "100%", overflow: "scroll", height: "calc(100vh - 60px)"}}>
+          <Box sx={{width: "100%", display: "flex", overflow: "scroll", padding: "30px"}}>
+            <Box sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: "800px", width: mobile ? "300px" : "400px", boxShadow: 3}}>
+              <Typography variant="h6" sx={{mt: "10px"}}>Addable Classes</Typography>
             </Box>
             <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px"}}>
               <Box sx={{display: "flex", width: "100%", justifyContent: "center", gap: "30px"}}>
@@ -108,6 +116,14 @@ function Dashboard() {
                     onClose={handleClose}
                     MenuListProps={{
                       'aria-labelledby': 'basic-button',
+                    }}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
                     }}
                   >
                     <MenuItem onClick={handleClose}>Profile</MenuItem>
@@ -134,6 +150,14 @@ function Dashboard() {
                     MenuListProps={{
                       'aria-labelledby': 'basic-button',
                     }}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
                   >
                     <MenuItem onClick={handleClose}>Profile</MenuItem>
                     <MenuItem onClick={handleClose}>My account</MenuItem>
@@ -141,7 +165,7 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "600px", position: 'relative', width: "100%", ml: "30px", display: "flex", justifyContent: "space-around"}}>
+              <Box sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", justifyContent: "space-around"}}>
                 <Box>
                   <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Mon" : "Monday"}</Typography>
                 </Box>
@@ -158,7 +182,19 @@ function Dashboard() {
                   <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Fri" : "Friday"}</Typography>
                 </Box>
               </Box>
-              <Typography variant="h6">Credit Hours</Typography>
+              <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between"}}>
+                <Box sx={{display: "flex", flexDirection: "column", width: "50%", alignItems: "center", mt: "10px"}}>
+                  <Typography variant="h6" sx={{mb: "40px"}}>{creditHours} Credit Hours</Typography>
+                  <Button size="large" sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
+                  <Button size="large" sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
+                  <Button size="large" sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Run Distance Estimate</Button>
+                  <Button size="large" sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
+                </Box>
+                <Box sx={{width: "50%", boxShadow: 3, display: "flex", justifyContent: "center", height: "335px", pt: "10px"}}>
+                  <Typography variant="h6">Current Classes</Typography>
+                </Box>
+              </Box>
+
             </Box>
           </Box>
         </Box>
