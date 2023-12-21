@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DashNavbar from "../components/DashNavbar"
 import { getSession } from "../utils/routing";
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,8 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
+
+import Alert from "../components/LogoutAlert";
 
 import "../stylesheets/anims.css"
 

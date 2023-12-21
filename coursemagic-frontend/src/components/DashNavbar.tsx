@@ -1,19 +1,22 @@
+import React, { useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { Button } from "@mui/material"
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
-import { logout } from '../utils/routing';
-import { useNavigate } from 'react-router-dom';
+import Alert from './LogoutAlert';
 
 function DashNavbar() {
-  const navigate = useNavigate();
-  const handleLogout = async () => {
-    await logout();
-    navigate('/home');
+  const alertRef = useRef(null);
+
+  const dialog = () => {
+    if(alertRef.current) {
+      alertRef.current.handleClickOpen();
+    }
   }
   return (
     <AppBar sx={{backgroundColor:"transparent"}}position="sticky">
+      <Alert ref={alertRef}></Alert>
       <CssBaseline />
       <Toolbar sx={{display: "flex", justifyContent: "space-around", backgroundColor: "white", height: "64px"}}>
         <Box
@@ -25,7 +28,7 @@ function DashNavbar() {
         />
         <div></div>
         <Box sx={{display: "flex", gap: "20px"}}>
-        <Button onClick={handleLogout} variant='contained'>Log Out</Button>
+        <Button onClick={dialog} variant='contained'>Log Out</Button>
         </Box>
       </Toolbar>
     </AppBar>
