@@ -8,7 +8,7 @@
   import SettingsSuggestIcon from '@mui/icons-material/SettingsSuggest';
   import DirectionsIcon from '@mui/icons-material/Directions';
 
-  import "../index.css"
+  import "../stylesheets/anims.css"
 
   function Landing() {
     const [scroll, setscroll] = useState(0);
@@ -49,11 +49,11 @@
     return (
       <>
         <Navbar></Navbar>
-        <Box sx={{padding: "10px", overflow: "hidden", height: (mobile ? "3000px" : "2000px"), width:"100vw", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
+        <Box sx={{padding: "10px", overflow: "hidden", height: (mobile ? "3000px" : "2000px"), width:"100vw - 3px", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
           <Box sx={{display: "flex", width: "100%", justifyContent: "center", alignItems: "center", height: "88vh", mb: "45px"}}>
             <Box sx={{display: "flex", flexDirection: "column", width: (mobile ? "100%" : "45%"), textAlign: (mobile ? "center" : "left"), alignItems: 'center', justifyContent: 'center'}}>
               <Typography variant="h2" sx={{minWidth: "360px", marginLeft: (mobile ? "0px" : "100px"), color: "white", fontWeight: "bold"}}>Signing up for Classes Has Never Been More<br></br> <span style={{ color: 'blue' }}>	&#10024; Magical &#10024;</span></Typography>
-              <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Sign Up with Google</Button>
+              <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant="outlined" sx={{width: "30%", height: "50px", marginTop: "30px", marginLeft: (mobile ? "0px" : "100px")}}>Try CourseMagic</Button>
             </Box>
             <Box
               display= {mobile ? "none" : "flex"}
@@ -110,7 +110,7 @@
           </Box>
 
           <Box className={scroll === 2 ? "slide-and-fade" : "fade-away"}sx={{display: "flex", flexDirection: "column", gap: "10px", width: "100%", justifyContent: "flex-start", alignItems: "center", height: "500px", pt: (mobile ? "700px" : "200px")}}>
-            <Typography variant="h2" sx={{width: "80%", textAlign:"center", color: "white", fontWeight: "bold"}}>CourseMagic Takes Away the Guesswork. </Typography>
+            <Typography variant="h2" sx={{width: "80%", textAlign:"center", color: "white", fontWeight: "bold"}}>CourseMagic Takes Away the Guesswork.</Typography>
             <Box sx={{display: "flex", alignItems: "center", flexDirection: (mobile ? "column" : "row"), gap: "30px"}}>
               <Box
                 component="img"

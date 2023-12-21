@@ -13,7 +13,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
 
-import "../index.css"
+import "../stylesheets/anims.css"
 
 function Dashboard() {
   // State for csrf token requied for requests
@@ -22,7 +22,10 @@ function Dashboard() {
   // State for various ui componeents
   const [menuPopped, setMenuPopped] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const mobile = (screenWidth < 900);
+
+  //screen thresholds
+  const mobile = (screenWidth < 950);
+  const tiny = (screenWidth < 750);
   const med = (screenWidth < 1170);
 
   //State for credit hours
@@ -49,6 +52,7 @@ function Dashboard() {
 
   // Effect for updating window size
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
     };
@@ -73,9 +77,9 @@ function Dashboard() {
   };
 
   return(
-    <>
+    <Box>
       <DashNavbar></DashNavbar>
-      <Box sx={{display: "flex", overflow: "hidden"}}>
+      <Box sx={{display: "flex"}}>
         {
           // If mobile view, then we need the hamburger menu
           !med
@@ -93,12 +97,12 @@ function Dashboard() {
             </Box>
         }
         <Box className={med ? "increase-margin" : "decrease-margin"}sx={{width: "100%", overflow: "scroll", height: "calc(100vh - 60px)"}}>
-          <Box sx={{width: "100%", display: "flex", overflow: "scroll", padding: "30px"}}>
-            <Box sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: "800px", width: mobile ? "300px" : "400px", boxShadow: 3}}>
+          <Box sx={{width: "100%", display: "flex", padding: "20px", flexDirection: tiny ? "column-reverse" : "row", gap: tiny ? "30px" : ""}}>
+            <Box sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "800px", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
               <Typography variant="h6" sx={{mt: "10px"}}>Addable Classes</Typography>
             </Box>
-            <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px"}}>
-              <Box sx={{display: "flex", width: "100%", justifyContent: "center", gap: "30px"}}>
+            <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px", mr: "20px"}}>
+              <Box sx={{display: "flex", ml: "30px", width: "100%", justifyContent: "center", gap: "30px"}}>
                 <div>
                   <Button
                     id="basic-button"
@@ -165,32 +169,32 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", justifyContent: "space-around"}}>
+              <Box sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: tiny ? "column" : "row", justifyContent: tiny ? "space-between" : "space-around", alignItems: tiny ? "center" : ""}}>
                 <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Mon" : "Monday"}</Typography>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny  ? "Mon" : "Monday"}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Tue" : "Tuesday"}</Typography>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Tue" : "Tuesday"}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Wed" : "Wednesday"}</Typography>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Wed" : "Wednesday"}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Thur" : "Thursday"}</Typography>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Thur" : "Thursday"}</Typography>
                 </Box>
                 <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Fri" : "Friday"}</Typography>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Fri" : "Friday"}</Typography>
                 </Box>
               </Box>
-              <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between"}}>
-                <Box sx={{display: "flex", flexDirection: "column", width: "50%", alignItems: "center", mt: "10px"}}>
+              <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: tiny ? "column": "row", alignItems: tiny ? "center" : ""}}>
+                <Box sx={{display: "flex", flexDirection: "column", width: tiny ? "75%" : "50%", alignItems: "center", mt: "10px"}}>
                   <Typography variant="h6" sx={{mb: "40px"}}>{creditHours} Credit Hours</Typography>
                   <Button size="large" sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
                   <Button size="large" sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
                   <Button size="large" sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Run Distance Estimate</Button>
                   <Button size="large" sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
                 </Box>
-                <Box sx={{width: "50%", boxShadow: 3, display: "flex", justifyContent: "center", height: "335px", pt: "10px"}}>
+                <Box sx={{width: tiny ? "100%" : "50%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", justifyContent: "center", height: "335px", pt: "10px"}}>
                   <Typography variant="h6">Current Classes</Typography>
                 </Box>
               </Box>
@@ -199,7 +203,7 @@ function Dashboard() {
           </Box>
         </Box>
       </Box>
-    </>
+    </Box>
   )
 }
 

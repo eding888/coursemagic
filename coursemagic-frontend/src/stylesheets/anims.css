@@ -130,3 +130,7 @@
 .decrease-margin {
   animation: decrease-margin 0.5s forwards;
 }
+
+body {
+  overflow-x: hidden
+}
