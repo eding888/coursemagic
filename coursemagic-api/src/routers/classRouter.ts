@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClassAsCurrent, removeClass } from '../database/postgreDataAccess';
+import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClass, removeClass } from '../database/postgreDataAccess';
 import { findKeyWhereNull } from '../utils/jsHelper';
 
 const classRouter = express.Router();
@@ -25,16 +25,16 @@ classRouter.get('/userCurrentClasses', async (request: Request, response: Respon
   response.status(200).json(classes);
 });
 
-// Adds class to users current classes
-classRouter.post('/addUserCurrentClass', async (request: Request, response: Response) => {
+// Adds class to user
+classRouter.post('/addUserClass', async (request: Request, response: Response) => {
   const user = request.user as User;
-  const addClass: Class = request.body as Class;
-  addClass.userid = user.id;
+  const addedClass: Class = request.body as Class;
+  addedClass.userid = user.id;
   const nullKey = findKeyWhereNull(addClass);
   if(nullKey) {
     return response.status(400).json({error: `Missing fields: ${nullKey}`})
   }
-  const result = await addClassAsCurrent(addClass);
+  const result = await addClass(addedClass);
   if(!result) {
     return response.status(400).json({error: "Error with sql retrieval."});
   }

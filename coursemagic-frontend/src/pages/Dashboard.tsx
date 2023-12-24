@@ -13,7 +13,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
 
-import Alert from "../components/LogoutAlert";
+import AddClassAlert from "../components/AddClassAlert";
 
 import "../stylesheets/anims.css"
 
@@ -35,6 +35,13 @@ function Dashboard() {
 
   // I want the menu to close when screen get samll
   if(!med && menuPopped) setMenuPopped(false);
+
+  const addClassRef = useRef(null);
+  const handleAddClass = () => {
+    if(addClassRef.current) {
+      addClassRef.current.handleClickOpen();
+    }
+  }
 
   const navigate = useNavigate();
 
@@ -81,6 +88,7 @@ function Dashboard() {
   return(
     <Box>
       <DashNavbar></DashNavbar>
+      <AddClassAlert ref={addClassRef}></AddClassAlert>
       <Box sx={{display: "flex"}}>
         {
           // If mobile view, then we need the hamburger menu
@@ -88,7 +96,7 @@ function Dashboard() {
           ? <Box sx={{width: "300px", height: "calc(100vh - 64px)", boxShadow: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
               <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
             </Box>
-          : <Box sx={{zIndex: 1500, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 64px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
+          : <Box sx={{zIndex: 1000, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 64px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
               <Box sx={{display: "flex", width: "100%", justifyContent: "flex-end"}}>
                 <ListIcon onClick={() => {setMenuPopped(!menuPopped); console.log(menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
                 </ListIcon>
@@ -191,7 +199,7 @@ function Dashboard() {
               <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: tiny ? "column": "row", alignItems: tiny ? "center" : ""}}>
                 <Box sx={{display: "flex", flexDirection: "column", width: tiny ? "75%" : "50%", alignItems: "center", mt: "10px"}}>
                   <Typography variant="h6" sx={{mb: "40px"}}>{creditHours} Credit Hours</Typography>
-                  <Button size="large" sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
+                  <Button onClick={handleAddClass}size="large" sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
                   <Button size="large" sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
                   <Button size="large" sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Run Distance Estimate</Button>
                   <Button size="large" sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
