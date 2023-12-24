@@ -199,10 +199,10 @@ function Dashboard() {
               <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: tiny ? "column": "row", alignItems: tiny ? "center" : ""}}>
                 <Box sx={{display: "flex", flexDirection: "column", width: tiny ? "75%" : "50%", alignItems: "center", mt: "10px"}}>
                   <Typography variant="h6" sx={{mb: "40px"}}>{creditHours} Credit Hours</Typography>
-                  <Button onClick={handleAddClass}size="large" sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
-                  <Button size="large" sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
-                  <Button size="large" sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Run Distance Estimate</Button>
-                  <Button size="large" sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
+                  <Button onClick={handleAddClass}size= {med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
+                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
+                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Distance Estimate</Button>
+                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
                 </Box>
                 <Box sx={{width: tiny ? "100%" : "50%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", justifyContent: "center", height: "335px", pt: "10px"}}>
                   <Typography variant="h6">Current Classes</Typography>
