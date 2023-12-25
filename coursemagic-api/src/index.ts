@@ -10,6 +10,7 @@ import { initTables, clearAndResetTables } from './database/tableSchemas';
 
 //ROUTER IMPORTS
 import { validateToken, checkCsrf} from './utils/middlewareVerifications';
+import classRouter from './routers/classRouter';
 import googleAuthRouter from './routers/googleAuthRouter';
 import sessionManagementRouter from './routers/sessionManagementRouter';
 import refresh from './routers/refresh';
@@ -66,7 +67,16 @@ app.use(validateToken);  //validate token middleware
 app.use('/api', sessionManagementRouter);
 app.use(checkCsrf); // validate csrf middleware.
 
+app.use('/api', classRouter);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*
+const reset = async () => {
+  await clearAndResetTables(true);
+}
+reset();
+*/
 
 //initTables();
 

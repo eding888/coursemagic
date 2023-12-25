@@ -36,6 +36,7 @@ function Dashboard() {
   // I want the menu to close when screen get samll
   if(!med && menuPopped) setMenuPopped(false);
 
+  //Handles opening of add class alert
   const addClassRef = useRef(null);
   const handleAddClass = () => {
     if(addClassRef.current) {

@@ -1,4 +1,6 @@
 import axios from "axios";
+import store from '../redux/store';
+import { setCsrf } from '../redux/sessionSlice';
 
 const backendUrl = "http://localhost:3000"
 
@@ -14,24 +16,21 @@ interface ErrorResponse {
   message?: string;
 }
 
-
-const handleError = (error: ErrorResponse) => {
-  if (error.response) {
-    const errorMsg: string = error.response.data.error;
-    return errorMsg;
-  }
-  return 'No connection to server.';
-};
-
 export const getSession = async () => {
   try {
     const session = await axios.get(`${backendUrl}/api/getSession`, {withCredentials: true});
-    return session.data.csrf;
+    store.dispatch(setCsrf(session.data.csrf));
+    return true;
   } catch (error) {
-    await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
     try {
       const session = await axios.get(`${backendUrl}/api/getSession`, {withCredentials: true});
-      return session.data.csrf;
+      store.dispatch(setCsrf(session.data.csrf));
+      return true;
     } catch (error) {
       return false;
     }
@@ -44,5 +43,24 @@ export const logout = async () => {
     return true;
   } catch (error) {
     return false;
+  }
+}
+
+export const addClass= async (className: string, lectureHall: string, creditHours: number, startTime: number, endTime: number) => {
+  try {
+    await axios.post(`${backendUrl}/api/addUserClass`, {className, lectureHall, creditHours, startTime, endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    return true;
+  } catch (error) {
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
+    try {
+      await axios.post(`${backendUrl}/api/addUserClass`, {className, lectureHall, creditHours, startTime, endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

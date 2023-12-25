@@ -65,3 +65,5 @@ classRouter.delete('/removeClass', async (request: Request, response: Response) 
   response.status(200).end();
 
 });
+
+export default classRouter;
