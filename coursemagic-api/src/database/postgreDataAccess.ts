@@ -182,7 +182,7 @@ export const addClass = async (newClass: Class) => {
   try {
     const classid = await sql`
       INSERT INTO classes(userid, className, startTime, endTime, creditHours, lectureHall)
-      VALUES($${newClass.userid}, ${newClass.className}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      VALUES(${newClass.userid}, ${newClass.className}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
       RETURNING id;
     `
     return classid[0].id as number;

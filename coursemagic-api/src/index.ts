@@ -55,9 +55,12 @@ app.use(session({
     httpOnly: Bun.env.RUN === "test" ? false : true
   }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(express.json());
+app.use(express.static('build'));
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +70,7 @@ app.use(validateToken);  //validate token middleware
 app.use('/api', sessionManagementRouter);
 app.use(checkCsrf); // validate csrf middleware.
 
-app.use('/api', classRouter);
+app.use('/api', classRouter); //routes for operating with classes
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +81,7 @@ const reset = async () => {
 reset();
 */
 
-//initTables();
+initTables();
 
 const port = Bun.env.PORT || 3000;
 app.listen(port, () => {

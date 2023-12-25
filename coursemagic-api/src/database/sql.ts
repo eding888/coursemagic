@@ -3,7 +3,9 @@ import postgres, { Sql } from "postgres";
 let url = Bun.env.RUN === "test" ? Bun.env.TEST_POSTGRES_URL || "" : Bun.env.POSTGRES_URL || "";
 
 // The great sql helper funciton is born!!
-const sql: Sql = postgres(url);
+const sql: Sql = postgres(url, {
+  idle_timeout: 10
+});
 export default sql;
 
 /*

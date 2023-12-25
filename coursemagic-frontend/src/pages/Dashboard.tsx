@@ -18,9 +18,6 @@ import AddClassAlert from "../components/AddClassAlert";
 import "../stylesheets/anims.css"
 
 function Dashboard() {
-  // State for csrf token requied for requests
-  const [csrf, setCsrf] = useState("");
-
   // State for various ui componeents
   const [menuPopped, setMenuPopped] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -40,6 +37,7 @@ function Dashboard() {
   const addClassRef = useRef(null);
   const handleAddClass = () => {
     if(addClassRef.current) {
+      // @ts-expect-error: Issue with typings, works fine.
       addClassRef.current.handleClickOpen();
     }
   }
@@ -53,9 +51,7 @@ function Dashboard() {
       console.log(session);
       if(!session) {
         navigate("/home")
-        return;
       }
-      setCsrf(session);
     }
     retreiveSession();
   }, []);

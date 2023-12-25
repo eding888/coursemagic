@@ -9,7 +9,6 @@ const refresh = express.Router();
 // Refresh the auth token with refresh token
 refresh.post('/refresh', (request: Request, response: Response) => {
   const refresh = request.cookies.refresh;
-  console.log(refresh);
   if(!refresh) {
     return response.status(401).json({error: "No refresh token"});
   }
