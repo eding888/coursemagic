@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from '../redux/store';
 import { setCsrf } from '../redux/sessionSlice';
+import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 // All methods used to interact with backend via axios.
 
@@ -39,9 +40,9 @@ export const logout = async () => {
 }
 
 // Adds class to user class list
-export const addClass= async (className: string, lectureHall: string, creditHours: number, startTime: number, endTime: number) => {
+export const addClass= async (addedClass: Class) => {
   try {
-    await axios.post(`${backendUrl}/api/addUserClass`, {className, lectureHall, creditHours, startTime, endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    await axios.post(`${backendUrl}/api/addUserClass`, {className: addedClass.className, lectureHall: addedClass.lectureHall, creditHours: addedClass.creditHours, startTime: addedClass.startTime, endTime: addedClass.endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
     return true;
   } catch (error) {
     try {
@@ -50,8 +51,28 @@ export const addClass= async (className: string, lectureHall: string, creditHour
       return false;
     }
     try {
-      await axios.post(`${backendUrl}/api/addUserClass`, {className, lectureHall, creditHours, startTime, endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      await axios.post(`${backendUrl}/api/addUserClass`, {className: addedClass.className, lectureHall: addedClass.lectureHall, creditHours: addedClass.creditHours, startTime: addedClass.startTime, endTime: addedClass.endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
       return true;
+    } catch (error) {
+      return false;
+    }
+  }
+}
+
+// Gets all user classes
+export const getUserClasses = async () => {
+  try {
+    const classes = await axios.get(`${backendUrl}/api/userAllClasses`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    return classes.data;
+  } catch (error) {
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
+    try {
+      const classes = await axios.get(`${backendUrl}/api/userAllClasses`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      return classes.data;
     } catch (error) {
       return false;
     }

@@ -10,6 +10,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { addClass } from '../utils/routing';
 import { useNavigate } from 'react-router-dom';
+import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 
 const AddClassAlert = forwardRef((props, ref) => {
@@ -51,7 +52,15 @@ const AddClassAlert = forwardRef((props, ref) => {
     setOpen(false);
   };
   const handleAddClass = async () => {
-    const res = await addClass(className, lectureHall, creditHours, (startTime.getHours() * 60 + startTime.getMinutes()), (endTime.getHours() * 60 + endTime.getMinutes()));
+    const addedClass: Class = {
+      userid: "",
+      className,
+      lectureHall,
+      creditHours,
+      startTime: (startTime.getHours() * 60 + startTime.getMinutes()),
+      endTime: (endTime.getHours() * 60 + endTime.getMinutes())
+    }
+    const res = await addClass(addedClass);
     if(!res) {
       navigate("/home")
       return;

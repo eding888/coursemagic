@@ -11,6 +11,7 @@ function DashNavbar() {
 
   const dialog = () => {
     if(alertRef.current) {
+      // @ts-expect-error: Issue with typings, works fine.
       alertRef.current.handleClickOpen();
     }
   }

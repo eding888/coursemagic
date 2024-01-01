@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import DashNavbar from "../components/DashNavbar"
-import { getSession } from "../utils/routing";
+import { getSession, getUserClasses } from "../utils/routing";
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
@@ -35,6 +35,7 @@ function Dashboard() {
 
   //Handles opening of add class alert
   const addClassRef = useRef(null);
+
   const handleAddClass = () => {
     if(addClassRef.current) {
       // @ts-expect-error: Issue with typings, works fine.
@@ -54,6 +55,18 @@ function Dashboard() {
       }
     }
     retreiveSession();
+  }, []);
+
+  // Effect for getting all user classes
+  useEffect(() => {
+    const retreiveUserClasses = async () => {
+      const classes = await getUserClasses();
+      console.log(classes);
+      if(!classes) {
+        navigate("/home")
+      }
+    }
+    retreiveUserClasses();
   }, []);
 
   // Effect for updating window size
