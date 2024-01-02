@@ -27,7 +27,8 @@ function Dashboard() {
   const tiny = (screenWidth < 750);
   const med = (screenWidth < 1170);
 
-  //State for credit hours
+  //States for various user data
+  const [allUserClasses, setAllUserClasses] = useState([])
   const [creditHours, setCreditHours] = useState(0);
 
   // I want the menu to close when screen get samll
@@ -35,11 +36,27 @@ function Dashboard() {
 
   //Handles opening of add class alert
   const addClassRef = useRef(null);
-
   const handleAddClass = () => {
     if(addClassRef.current) {
+      const handleCloseCallback = () => {
+        // Do something when addClassRef is closed
+        console.log('addClassRef is closed');
+      };
+      // @ts-expect-error: Issue with typings, works fine.
+      addClassRef.current.handleClose = handleCloseCallback;
+
       // @ts-expect-error: Issue with typings, works fine.
       addClassRef.current.handleClickOpen();
+    }
+  }
+
+  // Retrieves all user data and updates state
+  const retrieveUserData = async () => {
+    const classes = await getUserClasses();
+    console.log(classes)
+    setAllUserClasses(classes);
+    if(!classes) {
+      navigate("/home")
     }
   }
 
@@ -49,24 +66,13 @@ function Dashboard() {
   useEffect(() => {
     const retreiveSession = async () => {
       const session = await getSession();
-      console.log(session);
       if(!session) {
         navigate("/home")
+      } else {
+        await retrieveUserData();
       }
     }
     retreiveSession();
-  }, []);
-
-  // Effect for getting all user classes
-  useEffect(() => {
-    const retreiveUserClasses = async () => {
-      const classes = await getUserClasses();
-      console.log(classes);
-      if(!classes) {
-        navigate("/home")
-      }
-    }
-    retreiveUserClasses();
   }, []);
 
   // Effect for updating window size
@@ -98,7 +104,7 @@ function Dashboard() {
   return(
     <Box>
       <DashNavbar></DashNavbar>
-      <AddClassAlert ref={addClassRef}></AddClassAlert>
+      <AddClassAlert retrieveUserData={retrieveUserData} ref={addClassRef}></AddClassAlert>
       <Box sx={{display: "flex"}}>
         {
           // If mobile view, then we need the hamburger menu

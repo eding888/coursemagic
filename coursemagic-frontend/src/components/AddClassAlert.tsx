@@ -12,8 +12,12 @@ import { addClass } from '../utils/routing';
 import { useNavigate } from 'react-router-dom';
 import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
+interface AddClassAlertProps {
+  retrieveUserData: () => Promise<void>;
+}
 
-const AddClassAlert = forwardRef((props, ref) => {
+
+const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
   const [open, setOpen] = useState(false);
 
   const [className, setClassName] = useState("");
@@ -45,12 +49,12 @@ const AddClassAlert = forwardRef((props, ref) => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-  console.log(className);
 
-
-  const handleClose = () => {
+  const handleClose = async () => {
     setOpen(false);
+    await props.retrieveUserData();
   };
+
   const handleAddClass = async () => {
     const addedClass: Class = {
       userid: "",
@@ -65,11 +69,14 @@ const AddClassAlert = forwardRef((props, ref) => {
       navigate("/home")
       return;
     }
+    await props.retrieveUserData();
     setOpen(false);
   }
+
   useImperativeHandle(ref, () => ({
-    handleClickOpen
-  }), [handleClickOpen]);
+    handleClickOpen,
+    handleClose
+  }), [handleClickOpen, handleClose]);
 
   return (
     <React.Fragment>
