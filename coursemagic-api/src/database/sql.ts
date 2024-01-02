@@ -3,9 +3,7 @@ import postgres, { Sql } from "postgres";
 let url = Bun.env.RUN === "test" ? Bun.env.TEST_POSTGRES_URL || "" : Bun.env.POSTGRES_URL || "";
 
 // Sql helper function
-const sql: Sql = postgres(url, {
-  idle_timeout: 10
-});
+const sql: Sql = postgres(url);
 export default sql;
 
 /*

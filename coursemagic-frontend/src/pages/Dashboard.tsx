@@ -14,6 +14,8 @@ import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
 
 import AddClassAlert from "../components/AddClassAlert";
+import ClassInCart from "../components/ClassInCart";
+import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 import "../stylesheets/anims.css"
 
@@ -38,13 +40,6 @@ function Dashboard() {
   const addClassRef = useRef(null);
   const handleAddClass = () => {
     if(addClassRef.current) {
-      const handleCloseCallback = () => {
-        // Do something when addClassRef is closed
-        console.log('addClassRef is closed');
-      };
-      // @ts-expect-error: Issue with typings, works fine.
-      addClassRef.current.handleClose = handleCloseCallback;
-
       // @ts-expect-error: Issue with typings, works fine.
       addClassRef.current.handleClickOpen();
     }
@@ -111,14 +106,34 @@ function Dashboard() {
           !med
           ? <Box sx={{width: "300px", height: "calc(100vh - 64px)", boxShadow: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
               <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
+              {
+                allUserClasses.map(selectedClass => {
+                  const formattedClass = selectedClass as Class;
+                  return (
+                    <>
+                      <ClassInCart selectedClass={formattedClass}/>
+                    </>
+                  )
+                })
+              }
             </Box>
           : <Box sx={{zIndex: 1000, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 64px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
               <Box sx={{display: "flex", width: "100%", justifyContent: "flex-end"}}>
-                <ListIcon onClick={() => {setMenuPopped(!menuPopped); console.log(menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
+                <ListIcon onClick={() => {setMenuPopped(!menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
                 </ListIcon>
               </Box>
               <Box className={menuPopped ? "fade-in" : "fade-out"} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <Typography variant="h5" sx={{mt: "5px"}}>Your Class Cart</Typography>
+                {
+                  allUserClasses.map(selectedClass => {
+                    const formattedClass = selectedClass as Class;
+                    return (
+                      <>
+                        <ClassInCart selectedClass={formattedClass}/>
+                      </>
+                    )
+                  })
+                }
               </Box>
             </Box>
         }
