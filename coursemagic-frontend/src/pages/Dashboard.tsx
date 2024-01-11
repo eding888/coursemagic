@@ -15,9 +15,18 @@ import AddIcon from '@mui/icons-material/Add';
 
 import AddClassAlert from "../components/AddClassAlert";
 import ClassInCart from "../components/ClassInCart";
-import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 import "../stylesheets/anims.css"
+
+// Cant import original, for some reason, camelback notation didn't work?
+interface Class {
+  classname: string,
+  userid: string,
+  starttime: number,
+  endtime: number,
+  credithours: number,
+  lecturehall: string
+}
 
 function Dashboard() {
   // State for various ui componeents
@@ -104,7 +113,7 @@ function Dashboard() {
         {
           // If mobile view, then we need the hamburger menu
           !med
-          ? <Box sx={{width: "300px", height: "calc(100vh - 64px)", boxShadow: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
+          ? <Box sx={{overflow: "scroll", gap: "15px", width: "300px", height: "calc(100vh - 64px)", boxShadow: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
               <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
               {
                 allUserClasses.map(selectedClass => {
@@ -122,7 +131,7 @@ function Dashboard() {
                 <ListIcon onClick={() => {setMenuPopped(!menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
                 </ListIcon>
               </Box>
-              <Box className={menuPopped ? "fade-in" : "fade-out"} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+              <Box className={menuPopped ? "fade-in" : "fade-out"} sx={{overflow: "scroll", gap: "15px", display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <Typography variant="h5" sx={{mt: "5px"}}>Your Class Cart</Typography>
                 {
                   allUserClasses.map(selectedClass => {
