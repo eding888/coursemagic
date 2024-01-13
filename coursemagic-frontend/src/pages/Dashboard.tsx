@@ -113,26 +113,9 @@ function Dashboard() {
         {
           // If mobile view, then we need the hamburger menu
           !med
-          ? <Box sx={{overflow: "scroll", gap: "15px", width: "300px", height: "calc(100vh - 64px)", boxShadow: 8, display: "flex", flexDirection: "column", alignItems: "center"}}>
-              <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
-              {
-                allUserClasses.map(selectedClass => {
-                  const formattedClass = selectedClass as Class;
-                  return (
-                    <>
-                      <ClassInCart selectedClass={formattedClass}/>
-                    </>
-                  )
-                })
-              }
-            </Box>
-          : <Box sx={{zIndex: 1000, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 64px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
-              <Box sx={{display: "flex", width: "100%", justifyContent: "flex-end"}}>
-                <ListIcon onClick={() => {setMenuPopped(!menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
-                </ListIcon>
-              </Box>
-              <Box className={menuPopped ? "fade-in" : "fade-out"} sx={{overflow: "scroll", gap: "15px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <Typography variant="h5" sx={{mt: "5px"}}>Your Class Cart</Typography>
+          ? <Box sx={{overflow: "scroll", height: "calc(100vh - 60px)", width: "300px", boxShadow: 8, paddingBottom: "8px"}}>
+                <Box sx={{gap: "15px", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
                 {
                   allUserClasses.map(selectedClass => {
                     const formattedClass = selectedClass as Class;
@@ -143,6 +126,27 @@ function Dashboard() {
                     )
                   })
                 }
+                </Box>
+            </Box>
+          : <Box sx={{zIndex: 1000, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 60px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
+              <Box sx={{display: "flex", width: "100%", justifyContent: "flex-end"}}>
+                <ListIcon onClick={() => {setMenuPopped(!menuPopped)}} sx={{ml: "auto", mr:"5px", cursor: "pointer"}}style={{fontSize: 40}}>
+                </ListIcon>
+              </Box>
+              <Box sx= {{height: "100%", overflow: "scroll", paddingBottom: "50px"}}>
+                <Box className={menuPopped ? "fade-in" : "fade-out"} sx={{gap: "15px", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant="h5" sx={{mt: "5px"}}>Your Class Cart</Typography>
+                  {
+                    allUserClasses.map(selectedClass => {
+                      const formattedClass = selectedClass as Class;
+                      return (
+                        <>
+                          <ClassInCart selectedClass={formattedClass}/>
+                        </>
+                      )
+                    })
+                  }
+                </Box>
               </Box>
             </Box>
         }

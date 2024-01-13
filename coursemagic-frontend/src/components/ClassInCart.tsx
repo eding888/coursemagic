@@ -19,7 +19,7 @@ interface ClassInCartProps {
 function ClassInCart(props: ClassInCartProps) {
   return (
     <>
-      <Box borderRadius="10px" sx={{height: "400px", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
+      <Box borderRadius="10px" sx={{height: "190px", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
         <Typography variant = "h5">
           {props.selectedClass.classname}
         </Typography>
