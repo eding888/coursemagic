@@ -13,6 +13,7 @@ export interface User {
 export interface Class {
   className: string,
   userid: string,
+  id: number,
   startTime: number,
   endTime: number,
   creditHours: number,
@@ -209,7 +210,7 @@ export const removeClass = async (classid: number) => {
         WHERE usercurrentclasses.id = ${classid};
     `;
     await sql`
-        DELETE FROM savedClassses WHERE
+        DELETE FROM savedClasses WHERE
         savedclasses.id = ${classid};
     `;
     return true;

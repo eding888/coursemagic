@@ -6,14 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import { logout } from '../utils/routing';
-import { useNavigate } from 'react-router-dom';
+import { deleteClass } from '../../utils/routing';
 
-
-const LogoutAlert = forwardRef((props, ref) => {
+interface DeleteClassAlertProps {
+  deletionId: number,
+  retrieveUserData: () => Promise<void>;
+}
+const DeleteClassAlert = forwardRef((props: DeleteClassAlertProps, ref) => {
   const [open, setOpen] = React.useState(false);
-
-  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,8 +24,9 @@ const LogoutAlert = forwardRef((props, ref) => {
   };
 
   const handleLogout = async () => {
-    await logout();
-    navigate('/home');
+    await deleteClass(props.deletionId);
+    await props.retrieveUserData();
+    setOpen(false);
   }
 
   useImperativeHandle(ref, () => ({
@@ -41,17 +42,17 @@ const LogoutAlert = forwardRef((props, ref) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Logout?
+          Delete Class?
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Proceed with Logout?
+            Are you sure you want to delete this class?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleLogout} autoFocus>
-            Log Out
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
@@ -59,4 +60,4 @@ const LogoutAlert = forwardRef((props, ref) => {
   );
 });
 
-export default LogoutAlert;
+export default DeleteClassAlert;

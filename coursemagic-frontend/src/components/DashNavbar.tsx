@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { Button } from "@mui/material"
 import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
-import Alert from './LogoutAlert';
+import Alert from './alerts/LogoutAlert';
 
 function DashNavbar() {
   const alertRef = useRef(null);

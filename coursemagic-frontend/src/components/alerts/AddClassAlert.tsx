@@ -8,9 +8,9 @@ import { Input, InputLabel, Box, Alert } from '@mui/material';
 import { TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import { addClass } from '../utils/routing';
+import { addClass } from '../../utils/routing';
 import { useNavigate } from 'react-router-dom';
-import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
+import { Class } from '../../../../coursemagic-api/src/database/postgreDataAccess'
 
 interface AddClassAlertProps {
   retrieveUserData: () => Promise<void>;
@@ -57,7 +57,8 @@ const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
 
   const handleAddClass = async () => {
     const addedClass: Class = {
-      userid: "",
+      userid: "", // user id and id will be automatically populated later, placeholder values first
+      id: 0,
       className,
       lectureHall,
       creditHours,
@@ -95,7 +96,7 @@ const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
             <Input value={className} onChange={newValue => setClassName(newValue.target.value)}id="class-name"></Input>
 
             <InputLabel htmlFor="credit-hours"># Credit Hours</InputLabel>
-            <Input value={creditHours} onChange={newValue => setCreditHours(Number(newValue.target.value))} id="credit-hours" type="number"></Input>
+            <Input value={creditHours} onChange={newValue => setCreditHours(Number(newValue.target.value))} id="credit-hours" type="number" defaultValue="1" inputProps={{min: "1"}}></Input>
 
             <InputLabel htmlFor="lecture-hall">Lecture Hall</InputLabel>
             <Input value={lectureHall} onChange={newValue => setLectureHall(newValue.target.value)} id="lecture-hall"></Input>

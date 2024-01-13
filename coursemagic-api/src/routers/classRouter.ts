@@ -45,9 +45,9 @@ classRouter.post('/addUserClass', async (request: Request, response: Response) =
 });
 
 // Deletes class at id
-classRouter.delete('/removeClass', async (request: Request, response: Response) => {
+classRouter.delete('/removeClass/:id', async (request: Request, response: Response) => {
   const user = request.user as User;
-  const classid: number = request.body.classid;
+  const classid: number = parseInt(request.params.id);
   if(!classid) {
     response.status(400).json({error: "No classid provied"});
   }
@@ -61,7 +61,7 @@ classRouter.delete('/removeClass', async (request: Request, response: Response) 
     return response.status(400).json({error: "This is not your class, you may not delete."});
   }
 
-  const result = await(removeClass);
+  const result = await removeClass(classid);
   if(!result) {
     return response.status(400).json({error: "Error with sql retrieval."});
   }

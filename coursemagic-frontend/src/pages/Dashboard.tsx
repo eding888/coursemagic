@@ -13,7 +13,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
 
-import AddClassAlert from "../components/AddClassAlert";
+import AddClassAlert from "../components/alerts/AddClassAlert";
 import ClassInCart from "../components/ClassInCart";
 
 import "../stylesheets/anims.css"
@@ -24,6 +24,7 @@ interface Class {
   userid: string,
   starttime: number,
   endtime: number,
+  id: number,
   credithours: number,
   lecturehall: string
 }
@@ -41,6 +42,7 @@ function Dashboard() {
   //States for various user data
   const [allUserClasses, setAllUserClasses] = useState([])
   const [creditHours, setCreditHours] = useState(0);
+  console.log(allUserClasses);
 
   // I want the menu to close when screen get samll
   if(!med && menuPopped) setMenuPopped(false);
@@ -121,7 +123,7 @@ function Dashboard() {
                     const formattedClass = selectedClass as Class;
                     return (
                       <>
-                        <ClassInCart selectedClass={formattedClass}/>
+                        <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
                       </>
                     )
                   })
@@ -141,7 +143,7 @@ function Dashboard() {
                       const formattedClass = selectedClass as Class;
                       return (
                         <>
-                          <ClassInCart selectedClass={formattedClass}/>
+                          <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
                         </>
                       )
                     })
