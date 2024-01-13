@@ -1,7 +1,7 @@
-![lastcommit](https://img.shields.io/github/last-commit/eding888/taskwizard/main)
-![issues](https://img.shields.io/github/issues/eding888/taskwizard)
+![lastcommit](https://img.shields.io/github/last-commit/eding888/coursemagic/main)
+![issues](https://img.shields.io/github/issues/eding888/coursemagic)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://makeapullrequest.com)
-![GitHub all releases](https://img.shields.io/github/downloads/eding888/taskwizard/total)
+![GitHub all releases](https://img.shields.io/github/downloads/eding888/coursemagic/total)
 ![taskwizard](https://i.ibb.co/z2767sk/coursemagic-high-resolution-logo-transparent.png)
 
 A website allowing for seamless and convenient planning of university course selection.
