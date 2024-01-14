@@ -21,7 +21,7 @@ const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
   const [open, setOpen] = useState(false);
 
   const [className, setClassName] = useState("");
-  const [creditHours, setCreditHours] = useState(0);
+  const [creditHours, setCreditHours] = useState(1);
   const [lectureHall, setLectureHall] = useState("");
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
@@ -96,7 +96,7 @@ const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
             <Input value={className} onChange={newValue => setClassName(newValue.target.value)}id="class-name"></Input>
 
             <InputLabel htmlFor="credit-hours"># Credit Hours</InputLabel>
-            <Input value={creditHours} onChange={newValue => setCreditHours(Number(newValue.target.value))} id="credit-hours" type="number" defaultValue="1" inputProps={{min: "1"}}></Input>
+            <Input value={creditHours} onChange={newValue => setCreditHours(Number(newValue.target.value))} id="credit-hours" type="number" inputProps={{min: "1"}}></Input>
 
             <InputLabel htmlFor="lecture-hall">Lecture Hall</InputLabel>
             <Input value={lectureHall} onChange={newValue => setLectureHall(newValue.target.value)} id="lecture-hall"></Input>

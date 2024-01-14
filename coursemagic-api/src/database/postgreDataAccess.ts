@@ -202,16 +202,16 @@ export const addClass = async (newClass: Class) => {
 export const removeClass = async (classid: number) => {
   try {
     await sql`
-        DELETE FROM classes
-        WHERE classes.id=${classid};
-    `;
-    await sql`
         DELETE FROM userCurrentClasses
-        WHERE usercurrentclasses.id = ${classid};
+        WHERE usercurrentclasses.classid = ${classid};
     `;
     await sql`
         DELETE FROM savedClasses WHERE
-        savedclasses.id = ${classid};
+        savedclasses.classid = ${classid};
+    `;
+    await sql`
+        DELETE FROM classes
+        WHERE classes.id=${classid};
     `;
     return true;
   } catch (error) {

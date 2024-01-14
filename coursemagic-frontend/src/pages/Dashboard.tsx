@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import DashNavbar from "../components/DashNavbar"
-import { getSession, getUserClasses } from "../utils/routing";
+import { getSession, getUserClasses, getUserCurrentClasses } from "../utils/routing";
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
@@ -41,6 +41,7 @@ function Dashboard() {
 
   //States for various user data
   const [allUserClasses, setAllUserClasses] = useState([])
+  const [userCurrentClasses, setUserCurrentClasses] = useState([])
   const [creditHours, setCreditHours] = useState(0);
   console.log(allUserClasses);
 
@@ -59,12 +60,14 @@ function Dashboard() {
   // Retrieves all user data and updates state
   const retrieveUserData = async () => {
     const classes = await getUserClasses();
-    console.log(classes)
+    const currentClasses = await getUserCurrentClasses();
     setAllUserClasses(classes);
+    setUserCurrentClasses(currentClasses);
     if(!classes) {
       navigate("/home")
     }
   }
+  console.log(userCurrentClasses);
 
   const navigate = useNavigate();
 

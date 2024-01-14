@@ -59,6 +59,26 @@ export const addClass= async (addedClass: Class) => {
   }
 }
 
+// Adds class to user current classes
+export const addClassToCurrent= async (classid: number) => {
+  try {
+    await axios.post(`${backendUrl}/api/addClassToCurrent/`, {classid}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    return true;
+  } catch (error) {
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
+    try {
+      await axios.post(`${backendUrl}/api/addClassToCurrent/`, {classid}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+}
+
 // Deletes class
 export const deleteClass= async (classid: number) => {
   try {
@@ -97,4 +117,26 @@ export const getUserClasses = async () => {
       return false;
     }
   }
+  return false;
+}
+
+// Get user current classes
+export const getUserCurrentClasses = async () => {
+  try {
+    const classes = await axios.get(`${backendUrl}/api/userCurrentClasses`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    return classes.data;
+  } catch (error) {
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
+    try {
+      const classes = await axios.get(`${backendUrl}/api/userCurrentClasses`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      return classes.data;
+    } catch (error) {
+      return false;
+    }
+  }
+  return false;
 }

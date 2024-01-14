@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClass, removeClass } from '../database/postgreDataAccess';
+import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClass, removeClass, addClassToUserCurrent } from '../database/postgreDataAccess';
 import { findKeyWhereNull } from '../utils/jsHelper';
 
 const classRouter = express.Router();
@@ -28,8 +28,6 @@ classRouter.get('/userCurrentClasses', async (request: Request, response: Respon
 // Adds class to user
 classRouter.post('/addUserClass', async (request: Request, response: Response) => {
   const user = request.user as User;
-  console.log("body", request.body);
-  console.log(user);
   const addedClass: Class = request.body as Class;
   addedClass.userid = user.id;
   console.log(addedClass);
@@ -43,6 +41,21 @@ classRouter.post('/addUserClass', async (request: Request, response: Response) =
   }
   response.status(200).json({addedId: result});
 });
+
+classRouter.post('/addClassToCurrent', async (request: Request, response: Response) => {
+  const user = request.user as User;
+  const classid: number = request.body.classid;
+  if(!classid) {
+    response.status(400).json({error: "No classid provied"});
+  }
+  const result = await addClassToUserCurrent(classid, user.id);
+  if(!result) {
+    return response.status(400).json({error: "Error with sql retrieval."});
+  }
+  response.status(200).json({addedId: result});
+});
+
+
 
 // Deletes class at id
 classRouter.delete('/removeClass/:id', async (request: Request, response: Response) => {

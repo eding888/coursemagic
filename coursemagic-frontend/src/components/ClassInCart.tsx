@@ -3,6 +3,7 @@ import { Box} from '@mui/system';
 import { convertTo12HourFormat } from '../utils/jsHelper';
 import DeleteClassAlert from './alerts/DeleteClassAlert';
 import { useRef } from 'react';
+import { addClassToCurrent } from '../utils/routing';
 
 // Cant import original, for some reason, camelback notation didn't work?
 interface Class {
@@ -29,6 +30,12 @@ function ClassInCart(props: ClassInCartProps) {
       deleteAlertRef.current.handleClickOpen();
     }
   }
+
+  const handleAddClassToCurrent = async () => {
+    await addClassToCurrent(props.selectedClass.id);
+    await props.retrieveUserData();
+  }
+
   return (
     <>
       <DeleteClassAlert retrieveUserData={props.retrieveUserData} deletionId={props.selectedClass.id} ref={deleteAlertRef}></DeleteClassAlert>
@@ -51,7 +58,7 @@ function ClassInCart(props: ClassInCartProps) {
         </Typography>
         
         <Box sx={{display: "flex", flexDirection: "column"}}>
-          <Button>Add to Current</Button>
+          <Button onClick = {handleAddClassToCurrent}>Add to Current</Button>
           <Button onClick= {deleteAlertDialog} size= "small" sx={{color: "red"}}>Delete</Button>
         </Box>
       </Box>
