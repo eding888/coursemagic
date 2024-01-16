@@ -1,6 +1,6 @@
 import { Typography, Button } from '@mui/material';
 import { Box} from '@mui/system';
-import { convertTo12HourFormat } from '../utils/jsHelper';
+import { convertTo12HourFormat, daysOfWeekNumsToStr } from '../utils/jsHelper';
 import DeleteClassAlert from './alerts/DeleteClassAlert';
 import { useRef } from 'react';
 import { addClassToCurrent } from '../utils/routing';
@@ -21,35 +21,33 @@ function CurrentClass(props: CurrentClassProps) {
     }
   }
 
-  const handleAddClassToCurrent = async () => {
-    await addClassToCurrent(props.selectedClass.id);
-    await props.retrieveUserData();
-  }
-  console.log(props.selectedClass)
   return (
     <>
       <DeleteClassAlert retrieveUserData={props.retrieveUserData} deletionId={props.selectedClass.id} ref={deleteAlertRef}></DeleteClassAlert>
-      <Box borderRadius="10px" sx={{height: "190px", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
+      <Box borderRadius="10px" sx={{height: "115px", overflow: "scroll", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
         <Typography variant = "h5">
           {props.selectedClass.classname}
         </Typography>
 
-        <Typography sx={{mt: "5px"}}>
-          {props.selectedClass.credithours} Credit Hours
-        </Typography>
+        <Box sx={{width: "100%", display: "flex", justifyContent: "center", gap: "10px"}}>
+          <Typography>
+            {props.selectedClass.credithours} Credits
+          </Typography>
 
-        <Typography>
-          {convertTo12HourFormat(props.selectedClass.starttime)} - 
-          {convertTo12HourFormat(props.selectedClass.endtime)}
+          <Typography>
+            {convertTo12HourFormat(props.selectedClass.starttime)} - 
+            {convertTo12HourFormat(props.selectedClass.endtime)}
+          </Typography>
+          
+          <Typography>
+            {props.selectedClass.lecturehall}
+          </Typography>
+        </Box>
+        <Typography fontWeight="bold">
+          {daysOfWeekNumsToStr(props.selectedClass.daysofweek)}
         </Typography>
-        
-        <Typography>
-          {props.selectedClass.lecturehall}
-        </Typography>
-        
         <Box sx={{display: "flex", flexDirection: "column"}}>
-          <Button onClick = {handleAddClassToCurrent}>Add to Current</Button>
-          <Button onClick= {deleteAlertDialog} size= "small" sx={{color: "red"}}>Delete</Button>
+          <Button onClick= {deleteAlertDialog} size= "small" sx={{color: "red"}}>Remove</Button>
         </Box>
       </Box>
     </>

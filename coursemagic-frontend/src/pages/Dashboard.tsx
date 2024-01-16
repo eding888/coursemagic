@@ -28,7 +28,8 @@ function Dashboard() {
 
   //screen thresholds
   const mobile = (screenWidth < 950);
-  const tiny = (screenWidth < 750);
+  const tiny = (screenWidth < 825);
+  const micro = (screenWidth < 700);
   const med = (screenWidth < 1170);
 
   //States for various user data
@@ -219,7 +220,7 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: tiny ? "column" : "row", justifyContent: tiny ? "space-between" : "space-around", alignItems: tiny ? "center" : ""}}>
+              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: micro ? "column" : "row", justifyContent: micro ? "space-between" : "space-around", alignItems: micro ? "center" : ""}}>
                 <Box>
                   <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny  ? "Mon" : "Monday"}</Typography>
                 </Box>
@@ -237,26 +238,28 @@ function Dashboard() {
                 </Box>
               </Box>
               <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: tiny ? "column": "row", alignItems: tiny ? "center" : ""}}>
-                <Box sx={{display: "flex", flexDirection: "column", width: tiny ? "75%" : "50%", alignItems: "center", mt: "10px"}}>
+                <Box sx={{display: "flex", flexDirection: "column", width: tiny ? "75%" : "35%", alignItems: "center", mt: med && !tiny ? "45px" : "10px"}}>
                   <Typography variant="h6" sx={{mb: "40px"}}>{creditHours} Credit Hours</Typography>
-                  <Button onClick={handleAddClass}size= {med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
-                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
-                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Distance Estimate</Button>
-                  <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
+                  <Button onClick={handleAddClass}size= {med && ! tiny ? "small" : "large"} sx={{mb: "10px"}} variant="contained"><AddIcon sx={{mr: "5px"}}></AddIcon>Add Class to Cart</Button>
+                  <Button size={med && ! tiny ? "small" : "large"} sx={{mb: "10px"}}><DownloadIcon sx={{mr: "5px"}}></DownloadIcon>Save Schedule</Button>
+                  <Button size={med && ! tiny ? "small" : "large"} sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Distance Estimate</Button>
+                  <Button size={med && ! tiny ? "small" : "large"} sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Magic Schedule</Button>
                 </Box>
-                <Box borderRadius={2} sx={{width: tiny ? "100%" : "50%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", flexDirection: "column", alignItems: "center", height: "335px", pt: "10px"}}>
+                <Box borderRadius={2} sx={{width: tiny ? "100%" : "65%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", flexDirection: "column", alignItems: "center", height: "335px", pt: "10px"}}>
                   <Typography variant="h6">Current Classes</Typography>
-                  <Box sx={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
-                    {
-                      userCurrentClasses.map(selectedClass => {
-                        const formattedClass = selectedClass as Class;
-                        return (
-                          <>
-                            <CurrentClass retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
-                          </>
-                        )
-                      })
-                    }
+                  <Box sx={{overflow: "scroll", width: "100%"}}>
+                    <Box sx={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "10px"}}>
+                      {
+                        userCurrentClasses.map(selectedClass => {
+                          const formattedClass = selectedClass as Class;
+                          return (
+                            <>
+                              <CurrentClass retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
+                            </>
+                          )
+                        })
+                      }
+                    </Box>
                   </Box>
                 </Box>
               </Box>

@@ -1,6 +1,6 @@
 import { Typography, Button } from '@mui/material';
 import { Box} from '@mui/system';
-import { convertTo12HourFormat } from '../utils/jsHelper';
+import { convertTo12HourFormat, daysOfWeekNumsToStr } from '../utils/jsHelper';
 import DeleteClassAlert from './alerts/DeleteClassAlert';
 import { useRef } from 'react';
 import { addClassToCurrent } from '../utils/routing';
@@ -29,7 +29,7 @@ function ClassInCart(props: ClassInCartProps) {
   return (
     <>
       <DeleteClassAlert retrieveUserData={props.retrieveUserData} deletionId={props.selectedClass.id} ref={deleteAlertRef}></DeleteClassAlert>
-      <Box borderRadius="10px" sx={{height: "190px", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
+      <Box borderRadius="10px" sx={{height: "205px", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
         <Typography variant = "h5">
           {props.selectedClass.classname}
         </Typography>
@@ -45,6 +45,10 @@ function ClassInCart(props: ClassInCartProps) {
         
         <Typography>
           {props.selectedClass.lecturehall}
+        </Typography>
+
+        <Typography fontWeight="bold">
+          {daysOfWeekNumsToStr(props.selectedClass.daysofweek)}
         </Typography>
         
         <Box sx={{display: "flex", flexDirection: "column"}}>

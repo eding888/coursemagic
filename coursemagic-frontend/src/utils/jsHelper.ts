@@ -16,3 +16,34 @@ export function convertTo12HourFormat(minutes: number): string {
 
   return `${formattedHours}:${formattedMinutes} ${period}`;
 }
+
+// Converts days of week number array into actual days of week string.
+export function daysOfWeekNumsToStr(daysOfWeek: string): string | false {
+  const days = daysOfWeek.split("");
+  days.sort();
+
+  let out = ""
+  days.map((day) => {
+    switch(day) {
+      case "1":
+        out += "Mon, "
+        break;
+      case "2":
+        out += "Tue, "
+        break;
+      case "3":
+        out += "Wed, "
+        break;
+      case "4":
+        out += "Thu, "
+        break;
+      case "5":
+        out += "Fri, "
+        break;
+      default:
+        return false;
+    }
+  })
+  return out.substring(0, out.length - 2);
+
+}
