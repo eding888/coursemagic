@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request, Response } from 'express';
-import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClass, removeClass, addClassToUserCurrent } from '../database/postgreDataAccess';
+import { User, Class, getUserClasses, getUserCurrentClasses, getClassById, addClass, removeClass, addClassToUserCurrent, removeClassFromUserCurrent } from '../database/postgreDataAccess';
 import { findKeyWhereNull } from '../utils/jsHelper';
 
 const classRouter = express.Router();
@@ -53,6 +53,22 @@ classRouter.post('/addClassToCurrent', async (request: Request, response: Respon
   }
   response.status(200).json({addedId: result});
 });
+
+// Removes a class from a user's current classes.
+classRouter.delete('/removeFromCurrent/:id', async (request: Request, response: Response) => {
+  const user = request.user as User;
+  const classid: number = parseInt(request.params.id);
+  if(!classid) {
+    response.status(400).json({error: "No classid provied"});
+  }
+
+  const result = await removeClassFromUserCurrent(classid);
+  if(!result) {
+    return response.status(400).json({error: "Error with sql retrieval."});
+  }
+  response.status(200).end();
+});
+
 
 // Deletes class at id
 classRouter.delete('/removeClass/:id', async (request: Request, response: Response) => {

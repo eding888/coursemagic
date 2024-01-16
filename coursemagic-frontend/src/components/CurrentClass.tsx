@@ -3,7 +3,7 @@ import { Box} from '@mui/system';
 import { convertTo12HourFormat, daysOfWeekNumsToStr } from '../utils/jsHelper';
 import DeleteClassAlert from './alerts/DeleteClassAlert';
 import { useRef } from 'react';
-import { addClassToCurrent } from '../utils/routing';
+import { removeClassFromCurrent } from '../utils/routing';
 import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 interface CurrentClassProps {
@@ -14,11 +14,9 @@ interface CurrentClassProps {
 function CurrentClass(props: CurrentClassProps) {
   const deleteAlertRef = useRef(null);
 
-  const deleteAlertDialog = () => {
-    if(deleteAlertRef.current) {
-      // @ts-expect-error: Issue with typings, works fine.
-      deleteAlertRef.current.handleClickOpen();
-    }
+  const remove = async () => {
+    await removeClassFromCurrent(props.selectedClass.id);
+    await props.retrieveUserData();
   }
 
   return (
@@ -47,7 +45,7 @@ function CurrentClass(props: CurrentClassProps) {
           {daysOfWeekNumsToStr(props.selectedClass.daysofweek)}
         </Typography>
         <Box sx={{display: "flex", flexDirection: "column"}}>
-          <Button onClick= {deleteAlertDialog} size= "small" sx={{color: "red"}}>Remove</Button>
+          <Button onClick= {remove} size= "small" sx={{color: "red"}}>Remove</Button>
         </Box>
       </Box>
     </>

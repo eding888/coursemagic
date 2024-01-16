@@ -251,11 +251,11 @@ export const addClassToUserCurrent = async (classid: number, userid: string) => 
  * @param classid id of the class to be removed
  * @returns true on successful deletion
  */
-export const removeClassFromUserCurrent = async (classid: number) => {
+export const removeClassFromUserCurrent = async (selectedClassId: number) => {
   try {
     await sql`
       DELETE FROM usercurrentclasses
-      WHERE usercurrentclasses.classid = ${classid};
+      WHERE usercurrentclasses.id = ${selectedClassId};
     `
     return true;
 

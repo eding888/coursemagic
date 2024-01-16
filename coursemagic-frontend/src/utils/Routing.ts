@@ -80,6 +80,26 @@ export const addClassToCurrent= async (classid: number) => {
   }
 }
 
+// Removes class from user's current classes
+export const removeClassFromCurrent = async (classid: number) => {
+  try {
+    await axios.delete(`${backendUrl}/api/removeFromCurrent/${classid}`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    return true;
+  } catch (error) {
+    try {
+      await axios.post(`${backendUrl}/api/refresh`, {}, {withCredentials: true});
+    } catch (error) {
+      return false;
+    }
+    try {
+      await axios.delete(`${backendUrl}/api/removeFromCurrent/${classid}`, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+}
+
 // Deletes class
 export const deleteClass= async (classid: number) => {
   try {
