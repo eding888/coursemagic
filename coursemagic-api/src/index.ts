@@ -81,7 +81,7 @@ const reset = async () => {
 reset();
 */
 
-initTables();
+//initTables();
 
 const port = Bun.env.PORT || 3000;
 app.listen(port, () => {

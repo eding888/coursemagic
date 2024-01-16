@@ -14,6 +14,7 @@ const tables = async () => {
       id SERIAL PRIMARY KEY,
       userid varchar(255) NOT NULL,
       className varchar(255) NOT NULL,
+      daysofweek varchar(255) NOT NULL,
       startTime INT NOT NULL,
       endTime INT NOT NULL,
       creditHours INT NOT NULL,

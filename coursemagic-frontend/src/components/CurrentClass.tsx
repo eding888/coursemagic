@@ -6,12 +6,12 @@ import { useRef } from 'react';
 import { addClassToCurrent } from '../utils/routing';
 import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
-interface ClassInCartProps {
+interface CurrentClassProps {
   selectedClass: Class,
   retrieveUserData: () => Promise<void>;
 }
 
-function ClassInCart(props: ClassInCartProps) {
+function CurrentClass(props: CurrentClassProps) {
   const deleteAlertRef = useRef(null);
 
   const deleteAlertDialog = () => {
@@ -25,7 +25,7 @@ function ClassInCart(props: ClassInCartProps) {
     await addClassToCurrent(props.selectedClass.id);
     await props.retrieveUserData();
   }
-
+  console.log(props.selectedClass)
   return (
     <>
       <DeleteClassAlert retrieveUserData={props.retrieveUserData} deletionId={props.selectedClass.id} ref={deleteAlertRef}></DeleteClassAlert>
@@ -56,4 +56,4 @@ function ClassInCart(props: ClassInCartProps) {
   );
 }
 
-export default ClassInCart;
+export default CurrentClass;

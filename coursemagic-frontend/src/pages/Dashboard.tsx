@@ -15,19 +15,11 @@ import AddIcon from '@mui/icons-material/Add';
 
 import AddClassAlert from "../components/alerts/AddClassAlert";
 import ClassInCart from "../components/ClassInCart";
+import CurrentClass from "../components/CurrentClass";
+import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 import "../stylesheets/anims.css"
 
-// Cant import original, for some reason, camelback notation didn't work?
-interface Class {
-  classname: string,
-  userid: string,
-  starttime: number,
-  endtime: number,
-  id: number,
-  credithours: number,
-  lecturehall: string
-}
 
 function Dashboard() {
   // State for various ui componeents
@@ -67,7 +59,6 @@ function Dashboard() {
       navigate("/home")
     }
   }
-  console.log(userCurrentClasses);
 
   const navigate = useNavigate();
 
@@ -157,7 +148,7 @@ function Dashboard() {
         }
         <Box className={med ? "increase-margin" : "decrease-margin"}sx={{width: "100%", overflow: "scroll", height: "calc(100vh - 60px)"}}>
           <Box sx={{width: "100%", display: "flex", padding: "20px", flexDirection: tiny ? "column-reverse" : "row", gap: tiny ? "30px" : ""}}>
-            <Box sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "800px", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
+            <Box borderRadius={2} sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "800px", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
               <Typography variant="h6" sx={{mt: "10px"}}>Addable Classes</Typography>
             </Box>
             <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px", mr: "20px"}}>
@@ -228,7 +219,7 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: tiny ? "column" : "row", justifyContent: tiny ? "space-between" : "space-around", alignItems: tiny ? "center" : ""}}>
+              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: tiny ? "column" : "row", justifyContent: tiny ? "space-between" : "space-around", alignItems: tiny ? "center" : ""}}>
                 <Box>
                   <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny  ? "Mon" : "Monday"}</Typography>
                 </Box>
@@ -253,8 +244,20 @@ function Dashboard() {
                   <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Distance Estimate</Button>
                   <Button size={med && ! tiny ? "medium" : "large"} sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Get Magic Schedule</Button>
                 </Box>
-                <Box sx={{width: tiny ? "100%" : "50%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", justifyContent: "center", height: "335px", pt: "10px"}}>
+                <Box borderRadius={2} sx={{width: tiny ? "100%" : "50%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", flexDirection: "column", alignItems: "center", height: "335px", pt: "10px"}}>
                   <Typography variant="h6">Current Classes</Typography>
+                  <Box sx={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
+                    {
+                      userCurrentClasses.map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        return (
+                          <>
+                            <CurrentClass retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
+                          </>
+                        )
+                      })
+                    }
+                  </Box>
                 </Box>
               </Box>
 

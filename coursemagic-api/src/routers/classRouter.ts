@@ -30,7 +30,6 @@ classRouter.post('/addUserClass', async (request: Request, response: Response) =
   const user = request.user as User;
   const addedClass: Class = request.body as Class;
   addedClass.userid = user.id;
-  console.log(addedClass);
   const nullKey = findKeyWhereNull(addClass);
   if(nullKey) {
     return response.status(400).json({error: `Missing fields: ${nullKey}`})
@@ -54,8 +53,6 @@ classRouter.post('/addClassToCurrent', async (request: Request, response: Respon
   }
   response.status(200).json({addedId: result});
 });
-
-
 
 // Deletes class at id
 classRouter.delete('/removeClass/:id', async (request: Request, response: Response) => {

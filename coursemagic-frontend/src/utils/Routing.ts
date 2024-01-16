@@ -41,8 +41,9 @@ export const logout = async () => {
 
 // Adds class to user class list
 export const addClass= async (addedClass: Class) => {
+  console.log(addedClass);
   try {
-    await axios.post(`${backendUrl}/api/addUserClass`, {className: addedClass.className, lectureHall: addedClass.lectureHall, creditHours: addedClass.creditHours, startTime: addedClass.startTime, endTime: addedClass.endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+    await axios.post(`${backendUrl}/api/addUserClass`, {classname: addedClass.classname, daysofweek: addedClass.daysofweek, lecturehall: addedClass.lecturehall, credithours: addedClass.credithours, starttime: addedClass.starttime, endtime: addedClass.endtime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
     return true;
   } catch (error) {
     try {
@@ -51,7 +52,7 @@ export const addClass= async (addedClass: Class) => {
       return false;
     }
     try {
-      await axios.post(`${backendUrl}/api/addUserClass`, {className: addedClass.className, lectureHall: addedClass.lectureHall, creditHours: addedClass.creditHours, startTime: addedClass.startTime, endTime: addedClass.endTime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
+      await axios.post(`${backendUrl}/api/addUserClass`, {classname: addedClass.classname, daysofweek: addedClass.daysofweek, lecturehall: addedClass.lecturehall, credithours: addedClass.credithours, starttime: addedClass.starttime, endtime: addedClass.endtime}, { headers: { 'x-csrf-token': store.getState().session.csrf}, withCredentials: true});
       return true;
     } catch (error) {
       return false;

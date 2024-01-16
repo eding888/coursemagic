@@ -11,13 +11,14 @@ export interface User {
 }
 
 export interface Class {
-  className: string,
+  classname: string,
   userid: string,
   id: number,
-  startTime: number,
-  endTime: number,
-  creditHours: number,
-  lectureHall: string
+  starttime: number,
+  endtime: number,
+  daysofweek: string, // Days of week M-F correspond to a digit 1-5 listed in a string.
+  credithours: number,
+  lecturehall: string
 }
 
 export interface savedClass {
@@ -106,8 +107,9 @@ export const getUserClasses = async (userid: string) => {
 export const getUserCurrentClasses = async (userid: string) => {
   try {
     const classes = await sql`
-      SELECT * FROM usercurrentclasses
-      WHERE ${userid} = usercurrentclasses.userid;
+      SELECT * FROM classes
+      INNER JOIN usercurrentclasses ON usercurrentclasses.classid = classes.id
+      WHERE classes.userid = ${userid};
    `
     return classes;
   } catch (error) {
@@ -165,7 +167,7 @@ export const addClassAsCurrent = async (newClass: Class) => {
   try {
     const classid = await sql`
       INSERT INTO classes(userid, startTime, endTime, creditHours, lectureHall)
-      VALUES(${newClass.userid}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      VALUES(${newClass.userid}, ${newClass.starttime}, ${newClass.endtime}, ${newClass.credithours}, ${newClass.lecturehall})
       RETURNING id;
     `
     await sql`
@@ -180,12 +182,14 @@ export const addClassAsCurrent = async (newClass: Class) => {
 }
 
 export const addClass = async (newClass: Class) => {
+  console.log(newClass)
   try {
     const classid = await sql`
-      INSERT INTO classes(userid, className, startTime, endTime, creditHours, lectureHall)
-      VALUES(${newClass.userid}, ${newClass.className}, ${newClass.startTime}, ${newClass.endTime}, ${newClass.creditHours}, ${newClass.lectureHall})
+      INSERT INTO classes(userid, className, startTime, endTime, daysofweek, creditHours, lectureHall)
+      VALUES(${newClass.userid}, ${newClass.classname}, ${newClass.starttime}, ${newClass.endtime}, ${newClass.daysofweek}, ${newClass.credithours}, ${newClass.lecturehall})
       RETURNING id;
     `
+    console.log(newClass);
     return classid[0].id as number;
   } catch (error) {
     console.error(error);
