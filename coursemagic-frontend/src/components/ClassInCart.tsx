@@ -8,7 +8,8 @@ import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 interface ClassInCartProps {
   selectedClass: Class,
-  retrieveUserData: () => Promise<void>;
+  retrieveUserData: () => Promise<void>,
+  disabled: boolean
 }
 
 function ClassInCart(props: ClassInCartProps) {
@@ -52,7 +53,7 @@ function ClassInCart(props: ClassInCartProps) {
         </Typography>
         
         <Box sx={{display: "flex", flexDirection: "column"}}>
-          <Button onClick = {handleAddClassToCurrent}>Add to Current</Button>
+          <Button disabled = {props.disabled} onClick = {handleAddClassToCurrent}>Add to Current</Button>
           <Button onClick= {deleteAlertDialog} size= "small" sx={{color: "red"}}>Delete</Button>
         </Box>
       </Box>

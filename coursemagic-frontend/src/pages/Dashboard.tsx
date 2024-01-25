@@ -1,22 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
-import DashNavbar from "../components/DashNavbar"
-import { getSession, getUserClasses, getUserCurrentClasses } from "../utils/routing";
 import { useNavigate } from 'react-router-dom';
+import DashNavbar from "../components/DashNavbar"
+import AddClassAlert from "../components/alerts/AddClassAlert";
+import ClassInCart from "../components/ClassInCart";
+import CurrentClass from "../components/CurrentClass";
+
 import { Box, Typography } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
 import DirectionsIcon from '@mui/icons-material/Directions';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
 
-import AddClassAlert from "../components/alerts/AddClassAlert";
-import ClassInCart from "../components/ClassInCart";
-import CurrentClass from "../components/CurrentClass";
+
 import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
+import { getSession, getUserClasses, getUserCurrentClasses } from "../utils/routing";
+import { findClassConflicts } from "../utils/jsHelper";
 
 import "../stylesheets/anims.css"
 
@@ -33,10 +35,10 @@ function Dashboard() {
   const med = (screenWidth < 1170);
 
   //States for various user data
-  const [allUserClasses, setAllUserClasses] = useState([])
-  const [userCurrentClasses, setUserCurrentClasses] = useState([])
+  const [allUserClasses, setAllUserClasses] = useState<Class[]>([])
+  const [userCurrentClasses, setUserCurrentClasses] = useState<Class[]>([])
   const [creditHours, setCreditHours] = useState(0);
-  console.log(allUserClasses);
+  const [conflictIds, setConflictIds] = useState<Set<number>>(new Set());
 
   // I want the menu to close when screen get samll
   if(!med && menuPopped) setMenuPopped(false);
@@ -52,13 +54,20 @@ function Dashboard() {
 
   // Retrieves all user data and updates state
   const retrieveUserData = async () => {
-    const classes = await getUserClasses();
-    const currentClasses = await getUserCurrentClasses();
-    setAllUserClasses(classes);
-    setUserCurrentClasses(currentClasses);
+    const classes = await getUserClasses() as Class[];
+    // First request didnt work, meaning that something happened and we need to quit.
     if(!classes) {
       navigate("/home")
     }
+    const currentClasses = await getUserCurrentClasses() as Class[];
+    setAllUserClasses(classes);
+    setUserCurrentClasses(currentClasses); 
+    const conflicts = findClassConflicts(classes, currentClasses);
+    setConflictIds(conflicts);
+    const totalCredits = currentClasses.reduce((credits: number, currentClass) => {
+      return credits += currentClass.credithours;
+    }, 0);
+    setCreditHours(totalCredits);
   }
 
   const navigate = useNavigate();
@@ -118,7 +127,7 @@ function Dashboard() {
                     const formattedClass = selectedClass as Class;
                     return (
                       <>
-                        <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
+                        <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass} disabled={conflictIds.has(selectedClass.id)}/>
                       </>
                     )
                   })
@@ -138,7 +147,7 @@ function Dashboard() {
                       const formattedClass = selectedClass as Class;
                       return (
                         <>
-                          <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
+                          <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass} disabled={conflictIds.has(selectedClass.id)}/>
                         </>
                       )
                     })
@@ -149,7 +158,7 @@ function Dashboard() {
         }
         <Box className={med ? "increase-margin" : "decrease-margin"}sx={{width: "100%", overflow: "scroll", height: "calc(100vh - 60px)"}}>
           <Box sx={{width: "100%", display: "flex", padding: "20px", flexDirection: tiny ? "column-reverse" : "row", gap: tiny ? "30px" : ""}}>
-            <Box borderRadius={2} sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "800px", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
+            <Box borderRadius={2} sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "clamp(800px, 90vh, 3000px)", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
               <Typography variant="h6" sx={{mt: "10px"}}>Addable Classes</Typography>
             </Box>
             <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px", mr: "20px"}}>
@@ -220,7 +229,7 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "400px", width: "100%", ml: "30px", display: "flex", flexDirection: micro ? "column" : "row", justifyContent: micro ? "space-between" : "space-around", alignItems: micro ? "center" : ""}}>
+              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "clamp(400px, 40vh, 3000px)", width: "100%", ml: "30px", display: "flex", flexDirection: micro ? "column" : "row", justifyContent: micro ? "space-between" : "space-around", alignItems: micro ? "center" : ""}}>
                 <Box>
                   <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny  ? "Mon" : "Monday"}</Typography>
                 </Box>
@@ -245,7 +254,7 @@ function Dashboard() {
                   <Button size={med && ! tiny ? "small" : "large"} sx={{mb: "10px"}}><DirectionsIcon sx={{mr: "5px"}}></DirectionsIcon>Distance Estimate</Button>
                   <Button size={med && ! tiny ? "small" : "large"} sx={{mb: "10px"}}><AutoFixHighIcon sx={{mr: "5px"}}></AutoFixHighIcon>Magic Schedule</Button>
                 </Box>
-                <Box borderRadius={2} sx={{width: tiny ? "100%" : "65%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", flexDirection: "column", alignItems: "center", height: "335px", pt: "10px"}}>
+                <Box borderRadius={2} sx={{width: tiny ? "100%" : "65%", mt: tiny ? "30px" : "", boxShadow: 3, display: "flex", flexDirection: "column", alignItems: "center", height: "clamp(335px, 40vh, 3000px)", pt: "10px"}}>
                   <Typography variant="h6">Current Classes</Typography>
                   <Box sx={{overflow: "scroll", width: "100%"}}>
                     <Box sx={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center", gap: "10px"}}>

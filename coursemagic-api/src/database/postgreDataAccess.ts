@@ -257,8 +257,9 @@ export const removeClassFromUserCurrent = async (selectedClassId: number) => {
       DELETE FROM usercurrentclasses
       WHERE usercurrentclasses.id = ${selectedClassId};
     `
+    
     return true;
-
+    
   } catch (error) {
     console.error(error);
     return null;
