@@ -33,6 +33,7 @@
     }, [scroll]);
 
     useEffect(() => {
+      document.body.style.overflow = 'auto';
       const handleResize = () => {
         setScreenWidth(window.innerWidth);
       };
@@ -49,7 +50,7 @@
     return (
       <>
         <Navbar></Navbar>
-        <Box sx={{padding: "10px", overflow: "hidden", height: (mobile ? "3000px" : "2000px"), width:"100vw - 3px", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
+        <Box sx={{padding: "10px", height: (mobile ? "3000px" : "2000px"), width:"100vw - 3px", background: "linear-gradient(30deg, rgba(95,133,249,0.9962578781512605) 0%, rgba(96,201,242,0.9850533963585434) 82%)"}}>
           <Box sx={{display: "flex", width: "100%", justifyContent: "center", alignItems: "center", height: "88vh", mb: "45px"}}>
             <Box sx={{display: "flex", flexDirection: "column", width: (mobile ? "100%" : "45%"), textAlign: (mobile ? "center" : "left"), alignItems: 'center', justifyContent: 'center'}}>
               <Typography variant="h2" sx={{minWidth: "360px", marginLeft: (mobile ? "0px" : "100px"), color: "white", fontWeight: "bold"}}>Signing up for Classes Has Never Been More<br></br> <span style={{ color: 'blue' }}>	&#10024; Magical &#10024;</span></Typography>

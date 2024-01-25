@@ -57,7 +57,7 @@ function Dashboard() {
     const classes = await getUserClasses() as Class[];
     // First request didnt work, meaning that something happened and we need to quit.
     if(!classes) {
-      navigate("/home")
+      goHome();
     }
     const currentClasses = await getUserCurrentClasses() as Class[];
     setAllUserClasses(classes);
@@ -71,13 +71,18 @@ function Dashboard() {
   }
 
   const navigate = useNavigate();
+  //navigates to homepage
+  const goHome = () => {
+    document.body.style.overflow = "visible";
+    navigate("/home")
+  }
 
   // Effect for retrieving csrf on page load
   useEffect(() => {
     const retreiveSession = async () => {
       const session = await getSession();
       if(!session) {
-        navigate("/home")
+        goHome();
       } else {
         await retrieveUserData();
       }
@@ -121,17 +126,17 @@ function Dashboard() {
           !med
           ? <Box sx={{overflow: "scroll", height: "calc(100vh - 60px)", width: "300px", boxShadow: 8, paddingBottom: "8px"}}>
                 <Box sx={{gap: "15px", display: "flex", flexDirection: "column", alignItems: "center"}}>
-                <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
-                {
-                  allUserClasses.map(selectedClass => {
-                    const formattedClass = selectedClass as Class;
-                    return (
-                      <>
-                        <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass} disabled={conflictIds.has(selectedClass.id)}/>
-                      </>
-                    )
-                  })
-                }
+                  <Typography variant="h5" sx={{mt: "30px"}}>Your Class Cart</Typography>
+                  {
+                    allUserClasses.map(selectedClass => {
+                      const formattedClass = selectedClass as Class;
+                      return (
+                        <>
+                          <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass} disabled={conflictIds.has(selectedClass.id)}/>
+                        </>
+                      )
+                    })
+                  }
                 </Box>
             </Box>
           : <Box sx={{zIndex: 1000, backgroundColor: "whitesmoke", position: "absolute", height: "calc(100vh - 60px)", boxShadow: 8}} className={menuPopped ? "slide-menu-out" : "slide-menu-in"}>
@@ -158,8 +163,22 @@ function Dashboard() {
         }
         <Box className={med ? "increase-margin" : "decrease-margin"}sx={{width: "100%", overflow: "scroll", height: "calc(100vh - 60px)"}}>
           <Box sx={{width: "100%", display: "flex", padding: "20px", flexDirection: tiny ? "column-reverse" : "row", gap: tiny ? "30px" : ""}}>
-            <Box borderRadius={2} sx={{display: "flex", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "clamp(800px, 90vh, 3000px)", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
-              <Typography variant="h6" sx={{mt: "10px"}}>Addable Classes</Typography>
+            <Box borderRadius={2} sx={{display: "flex", overflow: "scroll", border: "2px", flexDirection: "column", alignItems: "center", height: tiny ? "335px" : "clamp(800px, 90vh, 3000px)", width: mobile ? tiny ? "100%" : "300px" : "400px", boxShadow: 3, ml : tiny ? "15px" : ""}}>
+              <Typography variant="h6" sx={{mt: "10px", mb: "10px"}}>Addable Classes</Typography>
+              <Box sx={{gap: "15px", display: "flex", flexDirection: "column", alignItems: "center", width: "100%", pb: "20px"}}>
+                {
+                  allUserClasses.map(selectedClass => {
+                    const formattedClass = selectedClass as Class;
+                    if(!conflictIds.has(selectedClass.id)) {
+                      return (
+                        <>
+                          <ClassInCart retrieveUserData={retrieveUserData} selectedClass={formattedClass} disabled={false}/>
+                        </>
+                      )
+                    }
+                  })
+                }
+              </Box>
             </Box>
             <Box sx={{display: "flex", width: "100%", flexDirection: "column", alignItems: "center", gap: "10px", mr: "20px"}}>
               <Box sx={{display: "flex", ml: "30px", width: "100%", justifyContent: "center", gap: "30px"}}>

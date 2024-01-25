@@ -5,6 +5,8 @@ import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 
+import GitHubIcon from '@mui/icons-material/GitHub';
+
 function Navbar() {
   return (
     <AppBar sx={{backgroundColor:"transparent"}}position="sticky">
@@ -19,6 +21,7 @@ function Navbar() {
         />
         <div></div>
         <Box sx={{display: "flex", gap: "20px"}}>
+          <Button onClick={() => window.open('https://github.com/eding888/coursemagic', '_blank')}variant='outlined'><GitHubIcon></GitHubIcon></Button>
           <Button onClick={() => {window.location.href = 'http://localhost:3000/auth/google'}} variant='contained'><GoogleIcon sx={{mr: "10px"}}></GoogleIcon>Sign In</Button>
         </Box>
       </Toolbar>

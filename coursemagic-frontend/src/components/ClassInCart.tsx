@@ -36,7 +36,7 @@ function ClassInCart(props: ClassInCartProps) {
         </Typography>
 
         <Typography sx={{mt: "5px"}}>
-          {props.selectedClass.credithours} Credit Hours
+          {props.selectedClass.credithours == 1 ? "1 Credit Hour" : `${props.selectedClass.credithours} Credit Hours`}
         </Typography>
 
         <Typography>

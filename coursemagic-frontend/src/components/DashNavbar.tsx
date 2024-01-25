@@ -6,6 +6,8 @@ import { Box } from '@mui/system';
 import { CssBaseline } from '@mui/material';
 import Alert from './alerts/LogoutAlert';
 
+import GitHubIcon from '@mui/icons-material/GitHub';
+
 function DashNavbar() {
   const alertRef = useRef(null);
 
@@ -29,6 +31,7 @@ function DashNavbar() {
         />
         <div></div>
         <Box sx={{display: "flex", gap: "20px"}}>
+        <Button onClick={() => window.open('https://github.com/eding888/coursemagic', '_blank')}variant='outlined'><GitHubIcon></GitHubIcon></Button>
         <Button onClick={dialog} variant='contained'>Log Out</Button>
         </Box>
       </Toolbar>

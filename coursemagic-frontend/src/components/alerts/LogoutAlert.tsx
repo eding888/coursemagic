@@ -25,7 +25,8 @@ const LogoutAlert = forwardRef((props, ref) => {
 
   const handleLogout = async () => {
     await logout();
-    navigate('/home');
+    document.body.style.overflow = "auto";
+    navigate("/home")
   }
 
   useImperativeHandle(ref, () => ({
