@@ -5,17 +5,25 @@ import { BrowserRouter } from 'react-router-dom';
 import store from './redux/store';
 import { Provider } from 'react-redux';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles'
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      'sans-serif'
+    ].join(','),
+  }
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store = {store}>
-        <Routes />
-      </Provider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Provider store = {store}>
+          <Routes />
+        </Provider>
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
 )
