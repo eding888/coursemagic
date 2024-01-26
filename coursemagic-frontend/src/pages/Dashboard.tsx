@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from 'react-router-dom';
 import DashNavbar from "../components/DashNavbar"
 import AddClassAlert from "../components/alerts/AddClassAlert";
+import LoadingAlert from "../components/alerts/LoadingAlert";
 import ClassInCart from "../components/ClassInCart";
 import CurrentClass from "../components/CurrentClass";
 import ClassInWeek from "../components/ClassInWeek";
@@ -15,7 +16,6 @@ import DirectionsIcon from '@mui/icons-material/Directions';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import DownloadIcon from '@mui/icons-material/Download';
 import AddIcon from '@mui/icons-material/Add';
-
 
 import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 import { getSession, getUserClasses, getUserCurrentClasses } from "../utils/routing";
@@ -39,6 +39,7 @@ function Dashboard() {
   const [allUserClasses, setAllUserClasses] = useState<Class[]>([])
   const [userCurrentClasses, setUserCurrentClasses] = useState<Class[]>([])
   const [creditHours, setCreditHours] = useState(0);
+  //Ids for the classes in the cart that have conflicting times with the current classes
   const [conflictIds, setConflictIds] = useState<Set<number>>(new Set());
 
   // I want the menu to close when screen get samll
@@ -53,8 +54,24 @@ function Dashboard() {
     }
   }
 
+  // Handles opening and closing of loading screen
+  const loaderRef = useRef(null);
+  const handleLoadOpen = () => {
+    if(addClassRef.current) {
+      // @ts-expect-error: Issue with typings, works fine.
+      addClassRef.current.handleClickOpen();
+    }
+  }
+  const handleLoadClose = () => {
+    if(addClassRef.current) {
+      // @ts-expect-error: Issue with typings, works fine.
+      addClassRef.current.handleClose();
+    }
+  }
+
   // Retrieves all user data and updates state
   const retrieveUserData = async () => {
+    handleLoadOpen();
     const classes = await getUserClasses() as Class[];
     // First request didnt work, meaning that something happened and we need to quit.
     if(!classes) {
@@ -69,6 +86,7 @@ function Dashboard() {
       return credits += currentClass.credithours;
     }, 0);
     setCreditHours(totalCredits);
+    handleLoadClose();
   }
 
   const navigate = useNavigate();
@@ -122,6 +140,8 @@ function Dashboard() {
     <Box>
       <DashNavbar></DashNavbar>
       <AddClassAlert retrieveUserData={retrieveUserData} ref={addClassRef}></AddClassAlert>
+      <LoadingAlert ref={addClassRef}></LoadingAlert>
+
       <Box sx={{display: "flex"}}>
         {
           // If mobile view, then we need the hamburger menu
@@ -354,7 +374,7 @@ function Dashboard() {
                           const formattedClass = selectedClass as Class;
                           return (
                             <>
-                              <CurrentClass retrieveUserData={retrieveUserData} selectedClass={formattedClass}/>
+                              <CurrentClass retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={med}/>
                             </>
                           )
                         })

@@ -8,7 +8,8 @@ import { Class } from '../../../coursemagic-api/src/database/postgreDataAccess'
 
 interface CurrentClassProps {
   selectedClass: Class,
-  retrieveUserData: () => Promise<void>;
+  retrieveUserData: () => Promise<void>,
+  smallVariant: boolean
 }
 
 function CurrentClass(props: CurrentClassProps) {
@@ -22,8 +23,8 @@ function CurrentClass(props: CurrentClassProps) {
   return (
     <>
       <DeleteClassAlert retrieveUserData={props.retrieveUserData} deletionId={props.selectedClass.id} ref={deleteAlertRef}></DeleteClassAlert>
-      <Box borderRadius="10px" sx={{height: "115px", overflow: "scroll", display: "flex", flexDirection: "column", alignItems: "center", width: "80%", border: "2px solid black"}}>
-        <Typography variant = "h5">
+      <Box borderRadius="10px" sx={{height: "140px", overflow: "scroll", display: "flex", flexDirection: "column", alignItems: "center", width: "70%", border: "2px solid black"}}>
+        <Typography variant = {props.smallVariant ? "h6" : "h5"}>
           {props.selectedClass.classname}
         </Typography>
 
@@ -36,11 +37,11 @@ function CurrentClass(props: CurrentClassProps) {
             {convertTo12HourFormat(props.selectedClass.starttime)} - 
             {convertTo12HourFormat(props.selectedClass.endtime)}
           </Typography>
-          
-          <Typography>
-            {props.selectedClass.lecturehall}
-          </Typography>
+
         </Box>
+        <Typography>
+          {props.selectedClass.lecturehall}
+        </Typography>
         <Typography fontWeight="bold">
           {daysOfWeekNumsToStr(props.selectedClass.daysofweek)}
         </Typography>
