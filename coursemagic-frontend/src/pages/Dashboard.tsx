@@ -4,6 +4,7 @@ import DashNavbar from "../components/DashNavbar"
 import AddClassAlert from "../components/alerts/AddClassAlert";
 import ClassInCart from "../components/ClassInCart";
 import CurrentClass from "../components/CurrentClass";
+import ClassInWeek from "../components/ClassInWeek";
 
 import { Box, Typography } from "@mui/material";
 import ListIcon from '@mui/icons-material/List';
@@ -92,6 +93,7 @@ function Dashboard() {
 
   // Effect for updating window size
   useEffect(() => {
+    document.title = 'Dashboard';
     document.body.style.overflow = "hidden";
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -248,21 +250,91 @@ function Dashboard() {
                   </Menu>
                 </div>
               </Box>
-              <Box borderRadius={2} sx={{zIndex: 1, boxShadow: 3, pt: "7px", height: "clamp(400px, 40vh, 3000px)", width: "100%", ml: "30px", display: "flex", flexDirection: micro ? "column" : "row", justifyContent: micro ? "space-between" : "space-around", alignItems: micro ? "center" : ""}}>
-                <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny  ? "Mon" : "Monday"}</Typography>
+              <Box borderRadius={2} sx={{overflow: "scroll", zIndex: 1, boxShadow: 3, pt: "7px", height: mobile ? "clamp(300px, 30vh, 3000px)" : "clamp(400px, 40vh, 3000px)", width: "100%", ml: "30px", display: "flex", flexDirection: "row", justifyContent: "space-around"}}>
+                <Box sx={{flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile  ? "Mon" : "Monday"}</Typography>
+                  <Box sx={{width: "100%", display: "flex", flexDirection: "column", mt: "10px", gap: "5px"}}>
+                    {
+                      userCurrentClasses.sort((a, b) => a.starttime - b.starttime).map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        if(selectedClass.daysofweek.indexOf('1') !== -1) {
+                          return (
+                            <>
+                              <ClassInWeek retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={mobile}/>
+                            </>
+                          )
+                        }
+                      })
+                    }
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Tue" : "Tuesday"}</Typography>
+                <Box sx={{flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Tue" : "Tuesday"}</Typography>
+                  <Box sx={{width: "100%", display: "flex", flexDirection: "column", mt: "10px", gap: "5px"}}>
+                    {
+                      userCurrentClasses.sort((a, b) => a.starttime - b.starttime).map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        if(selectedClass.daysofweek.indexOf('2') !== -1) {
+                          return (
+                            <>
+                              <ClassInWeek retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={mobile}/>
+                            </>
+                          )
+                        }
+                      })
+                    }
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Wed" : "Wednesday"}</Typography>
+                <Box sx={{flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Wed" : "Wednesday"}</Typography>
+                  <Box sx={{width: "100%", display: "flex", flexDirection: "column", mt: "10px", gap: "5px"}}>
+                    {
+                      userCurrentClasses.sort((a, b) => a.starttime - b.starttime).map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        if(selectedClass.daysofweek.indexOf('3') !== -1) {
+                          return (
+                            <>
+                              <ClassInWeek retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={mobile}/>
+                            </>
+                          )
+                        }
+                      })
+                    }
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Thur" : "Thursday"}</Typography>
+                <Box sx={{flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Thur" : "Thursday"}</Typography>
+                  <Box sx={{width: "100%", display: "flex", flexDirection: "column", mt: "10px", gap: "5px"}}>
+                    {
+                      userCurrentClasses.sort((a, b) => a.starttime - b.starttime).map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        if(selectedClass.daysofweek.indexOf('4') !== -1) {
+                          return (
+                            <>
+                              <ClassInWeek retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={mobile}/>
+                            </>
+                          )
+                        }
+                      })
+                    }
+                  </Box>
                 </Box>
-                <Box>
-                  <Typography variant={mobile ? "h6" : "h5"}>{mobile && !tiny ? "Fri" : "Friday"}</Typography>
+                <Box sx={{flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center"}}>
+                  <Typography variant={mobile ? "h6" : "h5"}>{mobile ? "Fri" : "Friday"}</Typography>
+                  <Box sx={{width: "100%", display: "flex", flexDirection: "column", mt: "10px", gap: "5px"}}>
+                    {
+                      userCurrentClasses.sort((a, b) => a.starttime - b.starttime).map(selectedClass => {
+                        const formattedClass = selectedClass as Class;
+                        if(selectedClass.daysofweek.indexOf('5') !== -1) {
+                          return (
+                            <>
+                              <ClassInWeek retrieveUserData={retrieveUserData} selectedClass={formattedClass} smallVariant={mobile}/>
+                            </>
+                          )
+                        }
+                      })
+                    }
+                  </Box>
                 </Box>
               </Box>
               <Box sx={{mt: "10px", ml: "30px", display: 'flex', width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: tiny ? "column": "row", alignItems: tiny ? "center" : ""}}>

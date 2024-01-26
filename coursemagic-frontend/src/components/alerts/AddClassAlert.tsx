@@ -61,6 +61,7 @@ const AddClassAlert = forwardRef((props: AddClassAlertProps, ref) => {
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
+    setDaysOfWeek("");
     setOpen(true);
   };
 

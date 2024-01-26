@@ -70,7 +70,8 @@ export function findClassConflicts(allClasses: Class[], currentClasses: Class[])
         const day = days[i];
         let run = true;
         classesPerDay[parseInt(day) - 1].some(classAtDay => {
-          if((certainClass.endtime > classAtDay.starttime) && (certainClass.starttime < classAtDay.endtime)) {
+          if(((certainClass.endtime >= classAtDay.starttime)&& (certainClass.starttime <= classAtDay.endtime)) || ((classAtDay.endtime >= certainClass.starttime) && (classAtDay.starttime <= certainClass.endtime))) {
+            console.log(certainClass, classAtDay)
             conflicts.add(certainClass.id);
             run = false;
             return true;

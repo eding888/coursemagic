@@ -33,6 +33,7 @@
     }, [scroll]);
 
     useEffect(() => {
+      document.title = 'CourseMagic';
       document.body.style.overflow = 'auto';
       const handleResize = () => {
         setScreenWidth(window.innerWidth);
